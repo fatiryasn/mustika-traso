@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk, Inter } from "next/font/google";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import RootClient from "./RootClient";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
@@ -34,10 +33,8 @@ export default function RootLayout({
       lang="en"
       className={`${jetbrains.variable} ${grotesk.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Navbar />
-        <div className="min-h-screen">{children}</div>
-        <Footer />
+      <body>
+        <RootClient>{children}</RootClient>
       </body>
     </html>
   );

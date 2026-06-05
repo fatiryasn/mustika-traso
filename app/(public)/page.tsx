@@ -2,9 +2,6 @@
 import Link from "next/link";
 import {
   FaArrowRight,
-  FaCertificate,
-  FaBuilding,
-  FaHardHat,
   FaWhatsapp,
 } from "react-icons/fa";
 
@@ -66,22 +63,6 @@ const SAMPLE_PROJECTS: Project[] = [
     year: 2024,
     productsUsed: ["Box Culvert 250x250", "Paving Block"],
   },
-];
-
-const certifications = [
-  { name: "ISO 9001:2015", desc: "Sistem Manajemen Mutu" },
-  { name: "SNI 03-0691-1996", desc: "Standar Paving Block" },
-  { name: "SNI 03-2847-2002", desc: "Tata Cara Perhitungan Struktur Beton" },
-  { name: "K3 Konstruksi", desc: "Keselamatan & Kesehatan Kerja" },
-];
-
-const clients = [
-  "PT Adhi Karya (Persero) Tbk",
-  "PT Waskita Karya (Persero) Tbk",
-  "PT Pembangunan Perumahan Tbk",
-  "Dinas PUPR Kabupaten Bekasi",
-  "Pengembang CitraRaya",
-  "PT Summarecon Agung Tbk",
 ];
 
 export default function HomePage() {
