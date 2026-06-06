@@ -12,7 +12,8 @@ import {
   HiOutlineSortDescending,
 } from "react-icons/hi";
 import DataTable, { type Column } from "@/components/DataTable";
-import { getProducts, deleteProduct, type Product } from "@/lib/product/product";
+import { getProducts } from "@/lib/product/product";
+import { Product } from "@/types/Product";
 import { formatDate } from "@/lib/utils/format";
 
 interface SortConfig {

@@ -2,12 +2,14 @@
 
 import { createClient } from "@/lib/supabase/server";
 
+//LOGOUT
 export async function logout() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   return {success: true}
 }
 
+//LOGIN
 export async function login(formData: FormData) {
   const supabase = await createClient();
   
@@ -25,6 +27,7 @@ export async function login(formData: FormData) {
   return { success: true };
 }
 
+//GET PROFILE
 export async function getProfile() {
   const supabase = await createClient();
   const {

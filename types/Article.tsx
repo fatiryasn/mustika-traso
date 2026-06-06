@@ -1,15 +1,15 @@
-export interface Project {
+export interface Article {
   id: string;
   title: string;
   slug: string;
-  description: string | null;
-  client_name: string | null;
-  project_date: string | null;
+  excerpt: string | null;
+  content: string | null;
+  author: string | null;
   thumbnail: string | null;
   created_at: string;
 }
 
-export interface GetProjectsParams {
+export interface GetArticlesParams {
   search?: string;
   sort?: { column: string; ascending: boolean };
   page?: number;

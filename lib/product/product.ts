@@ -2,33 +2,10 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { Product, GetProductsParams, ProductDetail, UpdateProductWithSubProductsParams } from "@/types/Product";
+import { generateSlug } from "@/lib/utils/generateSlug";
 
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  thumbnail: string | null;
-  created_at: string;
-  sub_products: { count: number }[];
-}
-
-interface GetProductsParams {
-  search?: string;
-  sort?: { column: string; ascending: boolean };
-  page?: number;
-  limit?: number;
-}
-
-//generate slug
-function generateSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
-//get products
+//GET PRODUCTS
 export async function getProducts({
   search = "",
   sort = { column: "created_at", ascending: false },
@@ -36,20 +13,19 @@ export async function getProducts({
   limit = 15,
 }: GetProductsParams) {
   const supabase = await createClient();
-
   let query = supabase
     .from("products")
     .select("*, sub_products(count)", { count: "exact" });
 
-  // Search
+  //search
   if (search.trim()) {
     query = query.or(`name.ilike.%${search}%,slug.ilike.%${search}%`);
   }
 
-  // Sort
+  //sort
   query = query.order(sort.column, { ascending: sort.ascending });
 
-  // Pagination
+  //pagination
   const from = (page - 1) * limit;
   const to = from + limit - 1;
   query = query.range(from, to);
@@ -64,7 +40,7 @@ export async function getProducts({
   };
 }
 
-//delete products
+//DELETE PRODUCT (missing delete image from bucket)
 export async function deleteProduct(id: string) {
   const supabase = await createClient();
 
@@ -75,22 +51,21 @@ export async function deleteProduct(id: string) {
   revalidatePath("/admin/manage-produk");
 }
 
-//upload product image
+//UPLOAD PRODUCT IMAGE
 export async function uploadProductImage(formData: FormData): Promise<string> {
   const supabase = await createClient();
   const file = formData.get("file") as File;
 
   if (!file) throw new Error("Tidak ada file yang diunggah.");
 
-  // Validate file type and size if needed
   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
     throw new Error(
       "Format file tidak didukung. Gunakan JPEG, PNG, atau WebP.",
     );
   }
-  if (file.size > 5 * 1024 * 1024) {
-    throw new Error("Ukuran file maksimal 5MB.");
+  if (file.size > 2 * 1024 * 1024) {
+    throw new Error("Ukuran file maksimal 2MB.");
   }
 
   const fileExt = file.name.split(".").pop();
@@ -109,7 +84,7 @@ export async function uploadProductImage(formData: FormData): Promise<string> {
   return publicUrl;
 }
 
-//create products
+//CREATE PRODUCT
 export async function createProduct(formData: {
   name: string;
   description?: string;
@@ -123,7 +98,7 @@ export async function createProduct(formData: {
 }) {
   const supabase = await createClient();
 
-  // Generate unique slug
+  //generate slug
   let slug = generateSlug(formData.name);
   let suffix = 1;
   while (true) {
@@ -137,7 +112,7 @@ export async function createProduct(formData: {
     suffix++;
   }
 
-  // Insert product
+  //insert
   const { data: product, error: productError } = await supabase
     .from("products")
     .insert({
@@ -151,7 +126,7 @@ export async function createProduct(formData: {
 
   if (productError) throw new Error(productError.message);
 
-  // Insert sub products if any
+  //sub product insert
   if (formData.sub_products.length > 0) {
     const subProducts = formData.sub_products.map((sp) => ({
       product_id: product.id,
@@ -168,33 +143,11 @@ export async function createProduct(formData: {
     if (subError) throw new Error(subError.message);
   }
 
-  // Revalidate the product list page
   revalidatePath("/admin/manage-produk");
   return { success: true, slug: product.slug };
 }
 
-
-// ---------- New: Detail / Edit ----------
-
-export interface SubProductDetail {
-  id: string;
-  name: string;
-  size: string | null;
-  weight: string | null;
-  price: number | null;
-}
-
-export interface ProductDetail {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  thumbnail: string | null;
-  created_at: string;
-  updated_at: string;
-  sub_products: SubProductDetail[];
-}
-
+//GET PRODUCT BY SLUG
 export async function getProductBySlug(
   slug: string
 ): Promise<ProductDetail | null> {
@@ -206,34 +159,20 @@ export async function getProductBySlug(
     .single();
 
   if (error) {
-    console.error("Error fetching product by slug:", error);
+    console.error("Error fetching product:", error);
     return null;
   }
   return data;
 }
 
-interface UpdateProductWithSubProductsParams {
-  id: string;
-  slug: string; // needed for revalidation
-  name?: string;
-  description?: string;
-  thumbnail?: string;
-  sub_products: {
-    id?: string; // existing sub‑product ID (keep, but will be re‑inserted anyway)
-    name: string;
-    size?: string;
-    weight?: string;
-    price?: number;
-  }[];
-}
-
+//UPDATE PRODUCT
 export async function updateProductWithSubProducts(
   params: UpdateProductWithSubProductsParams
 ) {
   const supabase = await createClient();
   const { id, slug, sub_products, ...productFields } = params;
 
-  // Update product fields (only provided ones)
+  //master product update
   const updateData: Record<string, any> = {};
   if (productFields.name !== undefined) updateData.name = productFields.name;
   if (productFields.description !== undefined) updateData.description = productFields.description;
@@ -248,7 +187,7 @@ export async function updateProductWithSubProducts(
     if (updateError) throw new Error(updateError.message);
   }
 
-  // Replace sub‑products: delete all, then insert the new list
+  //replace subproduct
   await supabase.from("sub_products").delete().eq("product_id", id);
   if (sub_products.length > 0) {
     const inserts = sub_products.map((sp) => ({
@@ -264,7 +203,6 @@ export async function updateProductWithSubProducts(
     if (insertError) throw new Error(insertError.message);
   }
 
-  // Revalidate the list and this detail page
   revalidatePath("/admin/manage-produk");
   revalidatePath(`/admin/manage-produk/${slug}`);
   return { success: true };

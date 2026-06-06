@@ -1,4 +1,3 @@
-// app/admin/login/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -57,7 +56,7 @@ export default function AdminLoginPage() {
                 className="h-12 mx-auto mb-4"
               />
               <h1 className="text-2xl font-grotesk font-bold text-gray-800">
-                Admin Login
+                CMS Login
               </h1>
               <p className="text-sm text-gray-500 font-inter mt-1">
                 Masuk ke panel kontrol admin

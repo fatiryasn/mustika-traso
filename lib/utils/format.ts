@@ -1,5 +1,8 @@
 // format date
-export const formatDate = (dateString: string) => {
+export const formatDate = (
+  dateString: string,
+  includeTime: boolean = true,
+): string => {
   if (!dateString) return "";
 
   const date = new Date(dateString);
@@ -9,6 +12,8 @@ export const formatDate = (dateString: string) => {
     month: "long",
     year: "numeric",
   });
+
+  if (!includeTime) return formattedDate;
 
   const formattedTime = date.toLocaleTimeString("id-ID", {
     hour: "2-digit",

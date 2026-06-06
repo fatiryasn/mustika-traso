@@ -1,6 +1,6 @@
-// app/admin/page.tsx
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   HiOutlineDocumentText,
@@ -8,47 +8,20 @@ import {
   HiOutlineCube,
   HiOutlineArrowRight,
 } from "react-icons/hi";
-import { MdOutlineDashboard } from "react-icons/md";
-
-const stats = [
-  {
-    label: "Jumlah Proyek",
-    value: "12",
-    icon: <HiOutlineBriefcase className="w-6 h-6" />,
-    href: "/admin/manage-proyek",
-    bgLight: "bg-blue-50",
-    textColor: "text-blue-600",
-  },
-  {
-    label: "Jumlah Produk",
-    value: "24",
-    icon: <HiOutlineCube className="w-6 h-6" />,
-    href: "/admin/manage-produk",
-    bgLight: "bg-emerald-50",
-    textColor: "text-emerald-600",
-  },
-  {
-    label: "Jumlah Artikel",
-    value: "8",
-    icon: <HiOutlineDocumentText className="w-6 h-6" />,
-    href: "/admin/manage-artikel",
-    bgLight: "bg-violet-50",
-    textColor: "text-violet-600",
-  },
-];
+import { getAdminStats } from "@/lib/overview/overview";
 
 const quickActions = [
   {
     title: "Tambah Produk Baru",
     description: "Input material beton pracetak terbaru",
-    href: "/admin/manage-produk",
+    href: "/admin/manage-produk/tambah",
     icon: <HiOutlineCube className="w-5 h-5" />,
     bg: "bg-emerald-500",
   },
   {
     title: "Tulis Artikel",
     description: "Publikasikan informasi atau berita",
-    href: "/admin/manage-artikel",
+    href: "/admin/manage-artikel/tambah",
     icon: <HiOutlineDocumentText className="w-5 h-5" />,
     bg: "bg-violet-500",
   },
@@ -62,6 +35,54 @@ const quickActions = [
 ];
 
 export default function AdminOverviewPage() {
+  const [stats, setStats] = useState({
+    projectsCount: 0,
+    productsCount: 0,
+    articlesCount: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getAdminStats();
+        setStats(data);
+      } catch (error) {
+        console.error("Failed to fetch stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  const statCards = [
+    {
+      label: "Jumlah Proyek",
+      value: loading ? "..." : stats.projectsCount,
+      icon: <HiOutlineBriefcase className="w-6 h-6" />,
+      href: "/admin/manage-proyek",
+      bgLight: "bg-blue-50",
+      textColor: "text-blue-600",
+    },
+    {
+      label: "Jumlah Produk",
+      value: loading ? "..." : stats.productsCount,
+      icon: <HiOutlineCube className="w-6 h-6" />,
+      href: "/admin/manage-produk",
+      bgLight: "bg-emerald-50",
+      textColor: "text-emerald-600",
+    },
+    {
+      label: "Jumlah Artikel",
+      value: loading ? "..." : stats.articlesCount,
+      icon: <HiOutlineDocumentText className="w-6 h-6" />,
+      href: "/admin/manage-artikel",
+      bgLight: "bg-violet-50",
+      textColor: "text-violet-600",
+    },
+  ];
+
   return (
     <div className="space-y-8">
       {/* WELCOME */}
@@ -76,9 +97,10 @@ export default function AdminOverviewPage() {
 
       {/* STATISTICS */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {stats.map((stat) => (
-          <div
+        {statCards.map((stat) => (
+          <Link
             key={stat.label}
+            href={stat.href}
             className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all group"
           >
             <div className="flex items-start justify-between">
@@ -94,7 +116,7 @@ export default function AdminOverviewPage() {
                 <span className={stat.textColor}>{stat.icon}</span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -124,18 +146,6 @@ export default function AdminOverviewPage() {
               <HiOutlineArrowRight className="ml-auto w-4 h-4 text-gray-300 group-hover:text-navy transition-colors" />
             </Link>
           ))}
-        </div>
-      </div>
-
-      {/* Recent Activity Placeholder */}
-      <div>
-        <h2 className="text-xl font-grotesk font-bold text-gray-800 mb-4">
-          Aktivitas Terbaru
-        </h2>
-        <div className="text-center py-8 text-gray-400 font-manrope text-sm">
-          <MdOutlineDashboard className="w-10 h-10 mx-auto mb-3 opacity-30" />
-          <p>Belum ada aktivitas terbaru.</p>
-          <p className="text-xs mt-1">Riwayat perubahan akan muncul di sini.</p>
         </div>
       </div>
     </div>
