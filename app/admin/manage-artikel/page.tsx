@@ -9,7 +9,8 @@ import {
   HiOutlineSortDescending,
 } from "react-icons/hi";
 import DataTable, { type Column } from "@/components/DataTable";
-import { getArticles, type Article } from "@/lib/article/article";
+import { getArticles } from "@/lib/article/article";
+import { Article } from "@/types/Article";
 import { formatDate } from "@/lib/utils/format";
 
 interface SortConfig {
