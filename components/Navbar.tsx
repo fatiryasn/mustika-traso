@@ -1,11 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsAtTop(window.scrollY === 0);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -16,15 +29,29 @@ const Navbar = () => {
     { name: "Kontak", href: "/kontak" },
   ];
 
+  // Determine if navbar is transparent
+  const isTransparent = isHomePage && isAtTop;
+
+  const bgClass = isTransparent ? "bg-transparent" : "bg-white shadow-sm";
+  const textColor = isTransparent ? "text-white" : "text-darkslate";
+  const hoverColor = isTransparent ? "hover:text-cyan-400" : "hover:text-navy";
+
+  // Logo source changes when transparent
+  const logoSrc = isTransparent
+    ? "/mustika-traso-logo-white.png"
+    : "/mustika-traso-logo-2.png";
+
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${bgClass}`}
+    >
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="shrink-0 flex items-center">
             <Link href="/">
               <img
-                src="/mustika-traso-logo-2.png"
+                src={logoSrc}
                 alt="Mustika Traso Logo"
                 className="h-16 w-auto"
               />
@@ -37,7 +64,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-darkslate hover:text-navy px-3 py-2 rounded-md font-medium font-grotesk transition-colors duration-200 uppercase tracking-wide"
+                className={`${textColor} ${hoverColor} px-3 py-2 rounded-md font-medium font-grotesk transition-colors duration-200 uppercase tracking-wide`}
               >
                 {link.name}
               </Link>
@@ -50,7 +77,11 @@ const Navbar = () => {
               href="https://wa.me/6281234567890"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-navy hover:bg-navy/80 text-white font-grotesk font-medium py-2 px-4 rounded-full inline-flex items-center transition-colors duration-200"
+              className={`font-grotesk font-medium py-2 px-4 rounded-full inline-flex items-center transition-all duration-200 ${
+                isTransparent
+                  ? "bg-white/20 text-white hover:bg-white/30"
+                  : "bg-navy hover:bg-navy/80 text-white"
+              }`}
             >
               <FaWhatsapp className="w-5 h-5 mr-2" />
               Kontak kami
@@ -61,7 +92,11 @@ const Navbar = () => {
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-navy hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy"
+              className={`inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy ${
+                isTransparent
+                  ? "text-white hover:bg-white/20"
+                  : "text-gray-700 hover:text-navy hover:bg-gray-100"
+              }`}
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -72,7 +107,6 @@ const Navbar = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -88,7 +122,6 @@ const Navbar = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -116,8 +149,6 @@ const Navbar = () => {
               {link.name}
             </Link>
           ))}
-
-          {/* Mobile WhatsApp Button */}
           <div className="mt-2 px-3 py-2">
             <a
               href="https://wa.me/6281234567890"

@@ -1,3 +1,4 @@
+// components/RootClient.tsx
 "use client";
 
 import Navbar from "@/components/Navbar";
@@ -13,6 +14,7 @@ export default function RootClient({
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith("/admin");
+  const isHomePage = pathname === "/";
 
   return (
     <>
@@ -23,15 +25,13 @@ export default function RootClient({
           <Navbar />
           <motion.div
             key={pathname}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{
-              duration: 0.5,
-              ease: "easeOut",
-            }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            {children}
+            {/* Add top padding on non‑home pages to clear the fixed navbar */}
+            <div className={isHomePage ? "" : "pt-20"}>{children}</div>
           </motion.div>
           <Footer />
           <WhatsappButton />
