@@ -74,7 +74,7 @@ const Navbar = () => {
           {/* WhatsApp Button */}
           <div className="hidden lg:flex items-center">
             <a
-              href="https://wa.me/6281234567890"
+              href="https://wa.me/628126588348"
               target="_blank"
               rel="noopener noreferrer"
               className={`font-grotesk font-medium py-2 px-4 rounded-full inline-flex items-center transition-all duration-200 ${
@@ -151,7 +151,7 @@ const Navbar = () => {
           ))}
           <div className="mt-2 px-3 py-2">
             <a
-              href="https://wa.me/6281234567890"
+              href="https://wa.me/628126588348"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-navy hover:bg-navy/80 text-white font-grotesk font-medium py-2 px-4 rounded-full inline-flex items-center justify-center w-full transition-colors duration-200"

@@ -98,8 +98,8 @@ const Footer = () => {
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="w-4 h-4 text-steelblue shrink-0 mt-0.5" />
                 <span className="text-white/70 text-sm font-inter">
-                  Jl. Raya Industri No. 123, Kawasan GIIC, Cikarang, Bekasi,
-                  Jawa Barat 17550
+                  Jl. Mesjid Desa Kolam Kecamatan Percut Sei Tuan Kabupaten Deli
+                  Serdang, Sumatera Utara
                 </span>
               </li>
               <li className="flex items-center space-x-3">
@@ -108,7 +108,7 @@ const Footer = () => {
                   href="tel:+622112345678"
                   className="text-white/70 hover:text-white transition-colors text-sm font-inter"
                 >
-                  (021) 1234 5678
+                  6282235495524
                 </a>
               </li>
               <li className="flex items-center space-x-3">
@@ -133,7 +133,7 @@ const Footer = () => {
               untuk proyek Anda.
             </p>
             <a
-              href="https://wa.me/6281234567890?text=Halo%20Admin%20Mustika%20Traso%2C%20saya%20ingin%20konsultasi%20kebutuhan%20beton%20precast"
+              href="https://wa.me/628126588348"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white font-grotesk font-bold py-3 px-5 rounded-full inline-flex items-center justify-center w-full transition-colors duration-200 text-sm uppercase tracking-wide"

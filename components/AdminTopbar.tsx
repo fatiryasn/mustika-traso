@@ -11,8 +11,7 @@ import {
   HiOutlineUser,
 } from "react-icons/hi";
 import { toast } from "sonner";
-// 👇 Import the server actions
-import { logout, getProfile } from "@/lib/auth/auth"; // adjust path as needed
+import { logout, getProfile } from "@/lib/auth/auth";
 
 interface AdminTopbarProps {
   onToggleSidebar?: () => void;

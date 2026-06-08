@@ -406,7 +406,7 @@ export default async function HomePage() {
               Minta Surat Penawaran (Inquiry)
             </Link>
             <a
-              href="https://wa.me/6281234567890?text=Halo%20Admin%20Mustika%20Trasu%2C%20saya%20kontraktor%20ingin%20tanya%20harga%20beton%20precast"
+              href="https://wa.me/628126588348"
               target="_blank"
               rel="noreferrer"
               className="px-8 py-4 bg-green-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-green-700 transition rounded-none w-full sm:w-auto inline-flex items-center justify-center space-x-2 font-jetbrains"

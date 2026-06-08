@@ -29,9 +29,22 @@ export default async function ProductDetailPage({
     );
   }
 
+  // WhatsApp message template
+  const whatsappNumber = "628126588348";
+  const message = `Halo, saya tertarik dengan produk ${product.name}. Bisa info lebih lanjut?`;
+  const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
   return (
     <div className="bg-background min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Back button */}
+        <Link
+          href="/produk"
+          className="inline-flex items-center text-navy hover:text-steelblue text-sm font-jetbrains font-medium mb-8"
+        >
+          <FaArrowLeft className="mr-2" /> Kembali ke Katalog Produk
+        </Link>
+
         {/* Product detail card */}
         <div className="overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
@@ -74,9 +87,9 @@ export default async function ProductDetailPage({
                   penawaran terbaik.
                 </p>
 
-                {/* WhatsApp button */}
+                {/* WhatsApp button – personalized message */}
                 <a
-                  href="https://wa.me/6281234567890?text=Halo%20Admin%20Mustika%20Traso%2C%20saya%20tertarik%20dengan%20produk%20Anda%20dan%20ingin%20menanyakan%20lebih%20lanjut%20tentang%20produk%20ini."
+                  href={waLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-green-700 transition-colors rounded-none"
@@ -140,14 +153,6 @@ export default async function ProductDetailPage({
             </div>
           )}
         </div>
-
-        {/* Back button */}
-        <Link
-          href="/produk"
-          className="inline-flex items-center text-navy hover:text-steelblue text-sm font-jetbrains font-medium mb-8"
-        >
-          <FaArrowLeft className="mr-2" /> Kembali ke Katalog Produk
-        </Link>
       </div>
     </div>
   );
