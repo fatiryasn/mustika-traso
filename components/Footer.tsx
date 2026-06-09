@@ -44,7 +44,7 @@ const Footer = () => {
           <img
             src="/field-pictures/image6.jpeg"
             alt=""
-            className="absolute top-0 left-0 min-w-full min-h-full object-cover -skew-x-12 scale-120"
+            className="absolute top-0 left-0 min-w-full min-h-full object-cover -skew-x-12 scale-110 -translate-x-20"
             style={{ objectPosition: "center" }}
           />
         </div>
@@ -67,10 +67,10 @@ const Footer = () => {
                 teknis pengiriman ke lokasi proyek Anda.
               </p>
 
-              <div className="flex gap-4 lg:gap-6 items-start">
+              <div className="flex flex-wrap gap-4 lg:gap-6 items-start">
                 <Link
                   href="/kontak"
-                  className="px-8 py-4 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-sm uppercase tracking-widest transition-colors rounded-none w-full sm:w-auto text-center font-jetbrains text-nowrap"
+                  className="px-5 py-3 md:px-8 md:py-4 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs md:text-sm uppercase tracking-widest transition-colors rounded-none sm:w-auto text-center font-jetbrains text-nowrap"
                 >
                   Minta Surat Penawaran
                 </Link>
@@ -78,7 +78,7 @@ const Footer = () => {
                   href={`https://wa.me/${COMPANY_DATA.wa_number}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-4 bg-green-600 text-white font-bold text-sm uppercase tracking-widest hover:bg-green-700 transition rounded-none w-full sm:w-auto inline-flex items-center justify-center gap-2 font-jetbrains text-nowrap"
+                  className="px-5 py-3 md:px-8 md:py-4 bg-green-600 text-white font-bold text-xs md:text-sm uppercase tracking-widest hover:bg-green-700 transition rounded-none sm:w-auto inline-flex items-center justify-center gap-2 font-jetbrains text-nowrap"
                 >
                   <FaWhatsapp className="text-lg" />
                   <span>Chat WhatsApp</span>
