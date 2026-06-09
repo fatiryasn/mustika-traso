@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
             <div className="text-center mb-8">
               <img
-                src="/mustika-traso-logo-2.png"
+                src="/mustika-traso-logo.png"
                 alt="Mustika Traso"
                 className="h-12 mx-auto mb-4"
               />

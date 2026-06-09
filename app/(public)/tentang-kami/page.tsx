@@ -68,7 +68,7 @@ export default function TentangKamiPage() {
             </p>
           </div>
 
-          <div className="relative h-[35rem] border border-bordergray rounded-none overflow-hidden">
+          <div className="relative h-[20rem] md:h-[30rem] lg:h-[35rem] border border-bordergray rounded-none overflow-hidden">
             <img
               src="/field-pictures/image7.jpeg"
               alt="Mustika Traso"
@@ -168,55 +168,55 @@ export default function TentangKamiPage() {
           </div>
 
           {/* 4x4 masonry grid */}
-          <div className="grid grid-cols-4 auto-rows-[200px] md:auto-rows-[240px] gap-3 md:gap-4 bg-gray-100">
+          <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[200px] md:auto-rows-[240px] gap-3 md:gap-4 bg-gray-100">
             {[
               {
                 src: "/field-pictures/image1.jpeg",
                 alt: "Operasional 1",
-                colSpan: "col-span-2",
-                rowSpan: "row-span-2", // 2x2 large
+                colSpan: "sm:col-span-1 lg:col-span-2",
+                rowSpan: "sm:row-span-2", // 2x2 large
               },
               {
                 src: "/field-pictures/image2.jpeg",
                 alt: "Operasional 2",
-                colSpan: "col-span-2",
-                rowSpan: "row-span-1", // wide
+                colSpan: "sm:col-span-1 lg:col-span-2",
+                rowSpan: "sm:col-span-1 lg:row-span-1", // wide
               },
               {
                 src: "/field-pictures/image3.jpeg",
                 alt: "Operasional 3",
-                colSpan: "col-span-1",
-                rowSpan: "row-span-2", // tall
+                colSpan: "sm:col-span-1",
+                rowSpan: "sm:row-span-1 lg:row-span-2", // tall
               },
               {
                 src: "/field-pictures/image4.jpeg",
                 alt: "Operasional 4",
-                colSpan: "col-span-1",
-                rowSpan: "row-span-1", // small
+                colSpan: "sm:col-span-2 lg:col-span-1",
+                rowSpan: "sm:row-span-2 lg:row-span-1", // small
               },
               {
                 src: "/field-pictures/image5.jpeg",
                 alt: "Operasional 5",
-                colSpan: "col-span-1",
-                rowSpan: "row-span-2", // tall
+                colSpan: "sm:col-span-1",
+                rowSpan: "sm:row-span-2", // tall
               },
               {
                 src: "/field-pictures/image6.jpeg",
                 alt: "Operasional 6",
-                colSpan: "col-span-1",
-                rowSpan: "row-span-1", // small
+                colSpan: "sm:col-span-1",
+                rowSpan: "sm:row-span-1", // small
               },
               {
                 src: "/field-pictures/image8.jpeg",
                 alt: "Operasional 8",
-                colSpan: "col-span-1",
-                rowSpan: "row-span-2", // small
+                colSpan: "sm:col-span-1",
+                rowSpan: "sm:row-span-2", // small
               },
               {
                 src: "/field-pictures/image7.jpeg",
                 alt: "Operasional 7",
-                colSpan: "col-span-2",
-                rowSpan: "row-span-1", // wide
+                colSpan: "sm:col-span-1 lg:col-span-2",
+                rowSpan: "sm:row-span-1", // wide
               },
             ].map((img, idx) => (
               <div

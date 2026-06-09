@@ -84,7 +84,7 @@ export default async function ArtikelPage({
                   {/* Content */}
                   <div className="p-6 flex flex-col justify-between flex-grow">
                     <div className="space-y-3">
-                      <div className="text-xs text-gray-400 font-mono uppercase tracking-wider">
+                      <div className="text-xs text-darkslate/70 font-jetbrains uppercase tracking-wider">
                         {new Date(article.created_at).toLocaleDateString(
                           "id-ID",
                           {
@@ -94,11 +94,11 @@ export default async function ArtikelPage({
                           },
                         )}
                       </div>
-                      <h3 className="text-lg font-bold font-display text-darkslate uppercase tracking-wide leading-tight group-hover:text-navy transition-colors line-clamp-2">
+                      <h3 className="text-lg font-black font-grotesk text-darkslate uppercase tracking-wide leading-tight group-hover:text-navy transition-colors line-clamp-2">
                         {article.title}
                       </h3>
                       {article.excerpt && (
-                        <p className="text-darkslate/70 text-xs sm:text-sm leading-relaxed line-clamp-3 font-inter">
+                        <p className="text-darkslate/80 text-xs sm:text-sm leading-relaxed line-clamp-3 font-inter">
                           {article.excerpt}
                         </p>
                       )}

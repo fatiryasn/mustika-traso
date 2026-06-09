@@ -47,10 +47,10 @@ export default async function ProductDetailPage({
 
         {/* Product detail card */}
         <div className="overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
             {/* Thumbnail – tall ratio */}
-            <div className="lg:col-span-2 pl-5 py-5">
-              <div className="aspect-[3/4] w-full overflow-hidden bg-gray-100 border border-bordergray">
+            <div className="md:col-span-2 pl-0 md:pl-5 py-5">
+              <div className="aspect-[3/4] w-full max-h-[25rem] sm:max-h-[30rem] md:max-h-max overflow-hidden bg-gray-100 border border-bordergray">
                 {product.thumbnail ? (
                   <img
                     src={product.thumbnail}
@@ -66,7 +66,7 @@ export default async function ProductDetailPage({
             </div>
 
             {/* Product info – right column */}
-            <div className="lg:col-span-3 p-6 md:p-10 flex flex-col justify-center">
+            <div className="md:col-span-3 p-5 md:p-7 lg:p-10 flex flex-col justify-center">
               <h1 className="text-2xl md:text-5xl font-black font-grotesk text-darkslate uppercase tracking-wide leading-tight">
                 {product.name}
               </h1>
@@ -103,7 +103,7 @@ export default async function ProductDetailPage({
 
           {/* Sub Products Table */}
           {product.sub_products && product.sub_products.length > 0 && (
-            <div className="p-6 md:p-10">
+            <div className="p-5 md:p-7 lg:p-10">
               <h2 className="text-lg font-bold font-inter text-darkslate uppercase tracking-wide mb-6">
                 Varian & Ukuran
               </h2>

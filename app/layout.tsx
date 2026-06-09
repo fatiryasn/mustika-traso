@@ -39,7 +39,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
-    // images: ["/og-image.png"],
+    images: ["/og-image.png"],
     description:
       "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
     url: "https://mustika-traso.vercel.app",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
     description:
       "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
-    // images: ["/og-image.png"],
+    images: ["/og-image.png"],
   },
 };
 

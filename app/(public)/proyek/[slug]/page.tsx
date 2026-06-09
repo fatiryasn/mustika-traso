@@ -41,9 +41,9 @@ export default async function ProjectDetailPage({
     <div className="bg-background min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Side‑by‑side layout: image left, data right */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-3 lg:gap-6">
           {/* Image – left column, near‑square ratio */}
-          <div className="lg:col-span-3 p-5">
+          <div className="md:col-span-3 p-5 md:p-10 lg:p-5">
             <div className="aspect-[4/3] w-full overflow-hidden bg-gray-100 border border-bordergray">
               {project.thumbnail ? (
                 <img
@@ -60,7 +60,7 @@ export default async function ProjectDetailPage({
           </div>
 
           {/* Data – right column */}
-          <div className="lg:col-span-2 flex flex-col justify-center">
+          <div className="md:col-span-2 flex flex-col justify-center">
             <h1 className="text-2xl md:text-4xl font-black font-grotesk text-darkslate uppercase tracking-wide leading-tight">
               {project.title}
             </h1>

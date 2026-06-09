@@ -24,7 +24,7 @@ export default function HeroImageStack({ images }: HeroImageStackProps) {
 
   return (
     <div
-      className="relative w-full max-w-md h-[380px] lg:h-[420px] cursor-pointer select-none"
+      className="relative w-full max-w-[16rem] h-[320px] sm:max-w-full lg:max-w-md lg:h-[420px] cursor-pointer select-none"
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

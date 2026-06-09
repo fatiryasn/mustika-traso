@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { FaArrowRight, FaWhatsapp } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { getProducts } from "@/lib/product/product";
 import { getProjects } from "@/lib/project/project";
 import { coreStrengths } from "@/data/coreStrengths";
 import { statistics } from "@/data/statistics";
 import ProjectCard from "@/components/ProjectCard";
 import HeroImageStack from "@/components/HeroImageStack";
+import { Metadata } from "next";
 
 //TYPES
 type HomeProduct = {
@@ -29,7 +30,7 @@ type HomeProject = {
 async function fetchHomeData() {
   const [productsRes, projectsRes] = await Promise.all([
     getProducts({
-      limit: 5,
+      limit: 7,
       sort: { column: "created_at", ascending: false },
     }),
     getProjects({
@@ -68,6 +69,44 @@ async function fetchHomeData() {
   return { products, projects };
 }
 
+export const metadata: Metadata = {
+  title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
+  description:
+    "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
+
+  icons: {
+    icon: "/favicon.ico",
+  },
+
+  keywords: [
+    "Beton",
+    "Beton Pracetak",
+    "Beton Pracetak Medan",
+    "Beton Pracetak Sumut",
+    "Beton Medan Sumatera Utara",
+    "PT. Mustika Traso",
+    "Mustika Traso",
+    "Supplier Beton Pracetak",
+    "Precast Concrete",
+  ],
+
+  openGraph: {
+    title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
+    images: ["/og-image.png"],
+    description:
+      "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
+    url: "https://mustika-traso.vercel.app",
+    siteName: "Mustika Traso Medan",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
+    description:
+      "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
+    images: ["/og-image.png"],
+  },
+};
 
 export default async function HomePage() {
   const { products, projects } = await fetchHomeData();
@@ -77,7 +116,7 @@ export default async function HomePage() {
       {/* HERO */}
       <section
         id="hero-section"
-        className="relative bg-darkslate text-white overflow-hidden h-screen flex flex-col"
+        className="relative bg-darkslate text-white overflow-hidden min-h-screen flex flex-col pt-20"
       >
         {/* bg pattern*/}
         <div
@@ -86,13 +125,13 @@ export default async function HomePage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-navy/20 -skew-x-12 transform origin-top-right" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-navy/20 -skew-x-12 transform origin-top-right z-0" />
 
         {/* MAIN CONTENT */}
-        <div className="flex-1 flex items-center mt-5">
+        <div className="flex-1 flex items-center mt-5 z-10">
           <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-0">
             {/* HERO-LEFT */}
-            <div className="lg:col-span-7 p-8 sm:p-12 lg:p-16 flex flex-col justify-center border-b lg:border-b-0">
+            <div className="lg:col-span-7 p-5 sm:p-12 lg:p-16 flex flex-col justify-center">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-grotesk leading-[0.9] uppercase mb-4">
                 BETON PRACETAK
                 <br />
@@ -100,12 +139,12 @@ export default async function HomePage() {
                 <br />
                 SIAP KIRIM
               </h1>
-              <p className="text-white/90 font-inter text-sm sm:text-base md:text-lg max-w-lg mb-8 leading-relaxed">
+              <p className="text-white/90 font-inter text-sm sm:text-base md:text-lg max-w-lg lg:mb-8 leading-relaxed">
                 Penyedia utama beton pra-cetak (precast) berstandar industri
                 nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan
                 pengiriman logistik untuk mendukung proyek infrastruktur Anda.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="hidden lg:flex flex-wrap gap-4">
                 <Link
                   href="/produk"
                   className="bg-cyan-500 hover:bg-cyan-600 text-black font-bold px-8 py-4 text-sm font-jetbrains uppercase tracking-widest transition-all inline-flex items-center gap-2 cursor-pointer rounded-none"
@@ -123,37 +162,53 @@ export default async function HomePage() {
             </div>
 
             {/* HERO-RIGHT */}
-            <div className="lg:col-span-5 flex items-center justify-center p-8 lg:p-12 relative">
+            <div className="lg:col-span-5 flex items-center justify-center pr-6 sm:p-12 relative">
               <HeroImageStack
                 images={[
                   {
                     src: "/field-pictures/image1.jpeg",
-                    alt: "Proyek 1",
+                    alt: "Mustika Traso Proyek 1",
                   },
                   {
                     src: "/field-pictures/image2.jpeg",
-                    alt: "Proyek 2",
+                    alt: "Mustika Traso Proyek 2",
                   },
                   {
                     src: "/field-pictures/image3.jpeg",
-                    alt: "Proyek 3",
+                    alt: "Mustika Traso Proyek 3",
                   },
                   {
                     src: "/field-pictures/image4.jpeg",
-                    alt: "Proyek 4",
+                    alt: "Mustika Traso Proyek 4",
                   },
                   {
                     src: "/field-pictures/image5.jpeg",
-                    alt: "Proyek 5",
+                    alt: "Mustika Traso Proyek 5",
                   },
                 ]}
               />
+            </div>
+
+            <div className="flex items-center justify-center lg:hidden flex-wrap gap-4 p-8">
+              <Link
+                href="/produk"
+                className="bg-cyan-500 hover:bg-cyan-600 text-black font-bold px-5 py-2 text-sm font-jetbrains uppercase tracking-widest transition-all inline-flex items-center gap-2 cursor-pointer rounded-none"
+              >
+                <span>KATALOG PRODUK</span>
+                <FaArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/proyek"
+                className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white px-5 py-2 text-sm font-jetbrains font-bold uppercase tracking-widest transition-all cursor-pointer rounded-none"
+              >
+                DOKUMENTASI PROYEK
+              </Link>
             </div>
           </div>
         </div>
 
         {/* STATISTICS */}
-        <div className="border-t border-white/20">
+        <div className="border-l border-t border-white/20 z-10">
           <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4">
             {statistics.map((stat, idx) => (
               <div
@@ -165,7 +220,7 @@ export default async function HomePage() {
                 <h4 className="text-3xl lg:text-4xl font-black font-display text-cyan-400 tracking-tighter mb-1">
                   {stat.value}
                 </h4>
-                <p className="text-xs uppercase font-bold tracking-widest text-white/70 font-jetbrains">
+                <p className="text-[10px] sm:text-xs uppercase font-bold tracking-widest text-white/70 font-jetbrains">
                   {stat.label}
                 </p>
               </div>
@@ -332,7 +387,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* FEATURED PROJECTS – consistent card sizes */}
+      {/* FEATURED PROJECTS */}
       <section
         id="featured-projects-section"
         className="py-20 bg-background border-b border-bordergray"
@@ -370,7 +425,7 @@ export default async function HomePage() {
             )}
           </div>
         </div>
-      </section>     
+      </section>
     </div>
   );
 }
