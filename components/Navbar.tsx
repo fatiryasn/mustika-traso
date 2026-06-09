@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 
+import { COMPANY_DATA, ROUTES } from "@/data/constants";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -20,26 +22,25 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Tentang Kami", href: "/tentang-kami" },
-    { name: "Produk", href: "/produk" },
-    { name: "Proyek", href: "/proyek" },
-    { name: "Artikel", href: "/artikel" },
-    { name: "Kontak", href: "/kontak" },
-  ];
+    const navLinks = [
+      { name: "Home", href: ROUTES.home },
+      { name: "Tentang Kami", href: ROUTES.about },
+      { name: "Produk", href: ROUTES.product },
+      { name: "Proyek", href: ROUTES.project },
+      { name: "Artikel", href: ROUTES.article },
+      { name: "Kontak", href: ROUTES.contact },
+    ];
 
-  // Determine if navbar is transparent
+  //transparent navbar
   const isTransparent = isHomePage && isAtTop;
 
   const bgClass = isTransparent ? "bg-transparent" : "bg-white shadow-sm";
   const textColor = isTransparent ? "text-white" : "text-darkslate";
   const hoverColor = isTransparent ? "hover:text-cyan-400" : "hover:text-navy";
 
-  // Logo source changes when transparent
   const logoSrc = isTransparent
     ? "/mustika-traso-logo-white.png"
-    : "/mustika-traso-logo-2.png";
+    : "/mustika-traso-logo.png";
 
   return (
     <nav
@@ -74,7 +75,7 @@ const Navbar = () => {
           {/* WhatsApp Button */}
           <div className="hidden lg:flex items-center">
             <a
-              href="https://wa.me/628126588348"
+              href={`https://wa.me/${COMPANY_DATA.wa_number}`}
               target="_blank"
               rel="noopener noreferrer"
               className={`font-grotesk font-medium py-2 px-4 rounded-full inline-flex items-center transition-all duration-200 ${
@@ -136,7 +137,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* MOBILE */}
       <div className={`lg:hidden ${isMenuOpen ? "block" : "hidden"}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
           {navLinks.map((link) => (
@@ -151,7 +152,7 @@ const Navbar = () => {
           ))}
           <div className="mt-2 px-3 py-2">
             <a
-              href="https://wa.me/628126588348"
+              href={`https://wa.me/${COMPANY_DATA.wa_number}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-navy hover:bg-navy/80 text-white font-grotesk font-medium py-2 px-4 rounded-full inline-flex items-center justify-center w-full transition-colors duration-200"
