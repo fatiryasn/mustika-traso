@@ -1,4 +1,3 @@
-// components/RootClient.tsx
 "use client";
 
 import Navbar from "@/components/Navbar";
@@ -30,7 +29,6 @@ export default function RootClient({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            {/* Add top padding on non‑home pages to clear the fixed navbar */}
             <div className={isHomePage ? "" : "pt-20"}>{children}</div>
           </motion.div>
           <Footer />

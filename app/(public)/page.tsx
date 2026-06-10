@@ -1,12 +1,14 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { FaArrowRight } from "react-icons/fa";
+
 import { getProducts } from "@/lib/product/product";
 import { getProjects } from "@/lib/project/project";
 import { coreStrengths } from "@/data/coreStrengths";
+import { COMPANY_DATA } from "@/data/constants";
 import { statistics } from "@/data/statistics";
 import ProjectCard from "@/components/ProjectCard";
 import HeroImageStack from "@/components/HeroImageStack";
-import { Metadata } from "next";
 
 //TYPES
 type HomeProduct = {
@@ -30,12 +32,12 @@ type HomeProject = {
 async function fetchHomeData() {
   const [productsRes, projectsRes] = await Promise.all([
     getProducts({
-      limit: 7,
-      sort: { column: "created_at", ascending: false },
+      limit: 5,
+      sort: { column: "name", ascending: true },
     }),
     getProjects({
       limit: 3,
-      sort: { column: "created_at", ascending: false },
+      sort: { column: "created_at", ascending: true },
     }),
   ]);
 
@@ -70,40 +72,37 @@ async function fetchHomeData() {
 }
 
 export const metadata: Metadata = {
-  title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
-  description:
-    "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
+  title: `${COMPANY_DATA.name} - Beton Pracetak Kualitas Tinggi`,
+  description: `${COMPANY_DATA.name} adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.`,
 
   icons: {
     icon: "/favicon.ico",
   },
 
-  keywords: [
+   keywords: [
     "Beton",
     "Beton Pracetak",
     "Beton Pracetak Medan",
     "Beton Pracetak Sumut",
     "Beton Medan Sumatera Utara",
-    "PT. Mustika Traso",
-    "Mustika Traso",
+    `${COMPANY_DATA.name}`,
+    `${COMPANY_DATA.brand_name}`,
     "Supplier Beton Pracetak",
     "Precast Concrete",
   ],
 
   openGraph: {
-    title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
+    title: `${COMPANY_DATA.name} - Beton Pracetak Kualitas Tinggi`,
     images: ["/og-image.png"],
-    description:
-      "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
+    description: `${COMPANY_DATA.name} adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.`,
     url: "https://mustika-traso.vercel.app",
     siteName: "Mustika Traso Medan",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mustika Traso - Beton Pracetak Kualitas Tinggi",
-    description:
-      "PT. Mustika Traso adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.",
+    title: `${COMPANY_DATA.name} - Beton Pracetak Kualitas Tinggi`,
+    description: `${COMPANY_DATA.name} adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.`,
     images: ["/og-image.png"],
   },
 };
@@ -307,7 +306,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* FEATURED PRODUCTS – unchanged */}
+      {/* FEATURED PRODUCTS */}
       <section
         id="featured-products-section"
         className="py-20 bg-white border-b border-bordergray"

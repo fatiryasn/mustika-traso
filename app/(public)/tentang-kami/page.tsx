@@ -1,43 +1,37 @@
-// app/tentang-kami/page.tsx
-import PageBanner from "@/components/PageBanner";
-import { coreStrengths } from "@/data/coreStrengths";
+import { Metadata } from "next";
 import { FaCompass, FaBullseye } from "react-icons/fa";
 
+import { COMPANY_DATA } from "@/data/constants";
+import { coreStrengths } from "@/data/coreStrengths";
+import { visiData, misiData } from "@/data/visiMisi";
+import PageBanner from "@/components/PageBanner";
+
+export const metadata: Metadata = {
+  title: `Tentang Kami - ${COMPANY_DATA.name}`,
+  description: `Mengenal visi, misi, dan nilai kredibilitas ${COMPANY_DATA.name}`,
+
+  keywords: [
+    "Beton",
+    "Beton Pracetak",
+    "Beton Pracetak Medan",
+    "Beton Pracetak Sumut",
+    "Beton Medan Sumatera Utara",
+    `${COMPANY_DATA.name}`,
+    `${COMPANY_DATA.brand_name}`,
+    "Supplier Beton Pracetak",
+    "Precast Concrete",
+    `Tentang ${COMPANY_DATA.brand_name}`,
+    `Visi Misi ${COMPANY_DATA.brand_name}`,
+  ],
+};
 export default function TentangKamiPage() {
-  // ----- Data Arrays -----
-  const visiData = [
-    {
-      id: 1,
-      text: "Menjadi produsen dan penyuplai industri produk beton pra-cetak (precast) terpercaya yang unggul dalam kualitas material, inovasi rancangan konstruksi, serta efisiensi solusi infrastruktur nasional di Indonesia.",
-    },
-  ];
-
-  const misiData = [
-    {
-      id: 1,
-      text: "Menghasilkan produk beton siap pakai yang bervarian lengkap dengan mutu karakteristik material yang konsisten, padat, presisi serta tahan lama.",
-    },
-    {
-      id: 2,
-      text: "Mengoptimalkan pelayanan logistik pengiriman komponen precast secara profesional dan tepat waktu demi menunjang jadwal progres mingguan kontraktor.",
-    },
-    {
-      id: 3,
-      text: "Menerapkan standardisasi manajemen mutu modern, otomatisasi mesin cetak, serta inovasi cetakan kustom untuk efisiensi budget pengerjaan sipil.",
-    },
-    {
-      id: 4,
-      text: "Membangun kemitraan strategis yang harmonis dan berkelanjutan dengan kontraktor swasta, pengembang perumahan, instansi BUMN, maupun masyarakat lokal.",
-    },
-  ];
-
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
       {/* BANNER */}
       <PageBanner
         label="Perusahaan"
         title="TENTANG KAMI"
-        description="Mengenal visi, misi, dan nilai kredibilitas PT. Mustika Traso"
+        description={`Mengenal visi, misi, dan nilai kredibilitas ${COMPANY_DATA.name}`}
       />
 
       {/* MAIN CONTENT */}
@@ -49,10 +43,10 @@ export default function TentangKamiPage() {
               Latar Belakang
             </h2>
             <h3 className="text-4xl font-black font-grotesk text-darkslate tracking-tight leading-none mb-6 uppercase">
-              PT. MUSTIKA TRASO: SEJARAH & REPUTASI
+              {COMPANY_DATA.name}: Sejarah & Reputasi
             </h3>
             <p className="text-darkslate/90 text-xs sm:text-base leading-relaxed mb-5 font-inter">
-              Mustika Traso merupakan perusahaan penyedia produk beton pra-cetak
+              {COMPANY_DATA.brand_name} merupakan perusahaan penyedia produk beton pra-cetak
               (precast concrete) premium yang didirikan untuk menjawab tingginya
               kebutuhan material konstruksi Indonesia yang andal, efisien, dan
               bersertifikasi. Kami mengoperasikan pabrik modern dengan kapasitas
@@ -60,7 +54,7 @@ export default function TentangKamiPage() {
               aspal jalan, dan gorong-gorong utilitas.
             </p>
             <p className="text-darkslate/90 text-xs sm:text-base leading-relaxed mb-6 font-inter">
-              Dalam kurun waktu pengabdian kami, Mustika Traso telah dipercaya
+              Dalam kurun waktu pengabdian kami, {COMPANY_DATA.brand_name} telah dipercaya
               oleh berbagai kontraktor swasta nasional, BUMN karya, hingga dinas
               pekerjaan umum pemerintahan kota untuk mensuplai material
               prasarana drainase jalan raya, kawasan logistik industri
@@ -71,7 +65,7 @@ export default function TentangKamiPage() {
           <div className="relative h-[20rem] md:h-[30rem] lg:h-[35rem] border border-bordergray rounded-none overflow-hidden">
             <img
               src="/field-pictures/image7.jpeg"
-              alt="Mustika Traso"
+              alt={`${COMPANY_DATA.name}`}
               className="object-cover w-full h-full"
             />
           </div>
@@ -121,7 +115,7 @@ export default function TentangKamiPage() {
           </div>
         </div>
 
-        {/* Core Values */}
+        {/* CORE VALUES */}
         <div>
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-xs font-bold text-steelblue font-jetbrains tracking-widest uppercase mb-3">
@@ -167,50 +161,49 @@ export default function TentangKamiPage() {
             <div className="h-1.5 w-16 bg-navy mx-auto mt-3"></div>
           </div>
 
-          {/* 4x4 masonry grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[200px] md:auto-rows-[240px] gap-3 md:gap-4 bg-gray-100">
             {[
               {
                 src: "/field-pictures/image1.jpeg",
                 alt: "Operasional 1",
                 colSpan: "sm:col-span-1 lg:col-span-2",
-                rowSpan: "sm:row-span-2", // 2x2 large
+                rowSpan: "sm:row-span-2",
               },
               {
                 src: "/field-pictures/image2.jpeg",
                 alt: "Operasional 2",
                 colSpan: "sm:col-span-1 lg:col-span-2",
-                rowSpan: "sm:col-span-1 lg:row-span-1", // wide
+                rowSpan: "sm:col-span-1 lg:row-span-1",
               },
               {
                 src: "/field-pictures/image3.jpeg",
                 alt: "Operasional 3",
                 colSpan: "sm:col-span-1",
-                rowSpan: "sm:row-span-1 lg:row-span-2", // tall
+                rowSpan: "sm:row-span-1 lg:row-span-2",
               },
               {
                 src: "/field-pictures/image4.jpeg",
                 alt: "Operasional 4",
                 colSpan: "sm:col-span-2 lg:col-span-1",
-                rowSpan: "sm:row-span-2 lg:row-span-1", // small
+                rowSpan: "sm:row-span-2 lg:row-span-1",
               },
               {
                 src: "/field-pictures/image5.jpeg",
                 alt: "Operasional 5",
                 colSpan: "sm:col-span-1",
-                rowSpan: "sm:row-span-2", // tall
+                rowSpan: "sm:row-span-2",
               },
               {
                 src: "/field-pictures/image6.jpeg",
                 alt: "Operasional 6",
                 colSpan: "sm:col-span-1",
-                rowSpan: "sm:row-span-1", // small
+                rowSpan: "sm:row-span-1",
               },
               {
                 src: "/field-pictures/image8.jpeg",
                 alt: "Operasional 8",
                 colSpan: "sm:col-span-1",
-                rowSpan: "sm:row-span-2", // small
+                rowSpan: "sm:row-span-2",
               },
               {
                 src: "/field-pictures/image7.jpeg",
@@ -228,7 +221,6 @@ export default function TentangKamiPage() {
                   alt={img.alt}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                {/* Overlay on hover */}
                 <div className="absolute inset-0 bg-navy/20 group-hover:bg-navy/10 transition-colors duration-300 pointer-events-none" />
               </div>
             ))}

@@ -170,7 +170,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   return data;
 }
 
-//UPDATE ARTICLE
+// UPDATE ARTICLE
 export async function updateArticle(params: {
   id: string;
   slug: string;
@@ -181,8 +181,39 @@ export async function updateArticle(params: {
   thumbnail?: string;
 }) {
   const supabase = await createClient();
-  const { id, slug, ...fields } = params;
+  const { id, slug: oldSlug, ...fields } = params;
 
+  //current article state
+  const { data: current, error: fetchError } = await supabase
+    .from("articles")
+    .select("title, slug, thumbnail")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  let newSlug = oldSlug;
+
+  //generate slug
+  if (fields.title && fields.title !== current.title) {
+    let baseSlug = generateSlug(fields.title);
+    let suffix = 1;
+    let candidateSlug = baseSlug;
+    while (true) {
+      const { data: existing } = await supabase
+        .from("articles")
+        .select("id")
+        .eq("slug", candidateSlug)
+        .neq("id", id)
+        .maybeSingle();
+      if (!existing) break;
+      candidateSlug = `${baseSlug}-${suffix}`;
+      suffix++;
+    }
+    newSlug = candidateSlug;
+  }
+
+  //build update data
   const updateData: Record<string, any> = {};
   if (fields.title !== undefined) updateData.title = fields.title;
   if (fields.excerpt !== undefined) updateData.excerpt = fields.excerpt;
@@ -190,18 +221,52 @@ export async function updateArticle(params: {
   if (fields.author !== undefined) updateData.author = fields.author;
   if (fields.thumbnail !== undefined) updateData.thumbnail = fields.thumbnail;
 
+  if (newSlug !== oldSlug) {
+    updateData.slug = newSlug;
+  }
+
   if (Object.keys(updateData).length === 0) {
     return { success: false, message: "Tidak ada pembaruan terdeteksi." };
   }
 
-  const { error } = await supabase
+  //update
+  const { error: updateError } = await supabase
     .from("articles")
     .update(updateData)
     .eq("id", id);
 
-  if (error) throw new Error(error.message);
+  if (updateError) throw new Error(updateError.message);
 
+  //clean up thumbnail
+  if (
+    fields.thumbnail &&
+    fields.thumbnail !== current.thumbnail &&
+    current.thumbnail
+  ) {
+    try {
+      const url = new URL(current.thumbnail);
+      const segments = url.pathname.split("/uploads/");
+      if (segments.length > 1) {
+        const filePath = segments[1];
+        const { error: storageError } = await supabase.storage
+          .from("uploads")
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error("Failed to delete old article thumbnail:", storageError);
+        }
+      }
+    } catch (err) {
+      console.error("Error cleaning up old article thumbnail:", err);
+    }
+  }
+
+  //revalidate paths
   revalidatePath("/admin/manage-artikel");
-  revalidatePath(`/admin/manage-artikel/${slug}`);
-  return { success: true };
+  revalidatePath(`/admin/manage-artikel/${oldSlug}`);
+  if (newSlug !== oldSlug) {
+    revalidatePath(`/admin/manage-artikel/${newSlug}`);
+  }
+
+  return { success: true, slug: newSlug };
 }

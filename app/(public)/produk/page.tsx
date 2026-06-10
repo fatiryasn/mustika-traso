@@ -1,19 +1,38 @@
-// app/produk/page.tsx
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
+import { Metadata } from "next";
+
 import { getProducts } from "@/lib/product/product";
+import { COMPANY_DATA } from "@/data/constants";
 import PublicProductPagination from "@/components/PublicProductPagination";
 import PageBanner from "@/components/PageBanner";
 
+export const metadata: Metadata = {
+  title: `Produk Beton Pracetak - ${COMPANY_DATA.name}`,
+  description: `Katalog lengkap ${COMPANY_DATA.name}, produk beton pracetak untuk drainase, infrastruktur, dan paving`,
+
+   keywords: [
+    "Beton",
+    "Beton Pracetak",
+    "Beton Pracetak Medan",
+    "Beton Pracetak Sumut",
+    "Beton Medan Sumatera Utara",
+    `${COMPANY_DATA.name}`,
+    `${COMPANY_DATA.brand_name}`,
+    "Supplier Beton Pracetak",
+    "Precast Concrete",
+    `Katalog Produk ${COMPANY_DATA.brand_name}`,
+    `Produk Beton ${COMPANY_DATA.brand_name}`,
+  ],
+};
 export default async function ProdukPage({
   searchParams,
 }: {
   searchParams: { page?: string; limit?: string };
 }) {
-  // --- Pagination defaults ---
   const currentPage = Number(searchParams.page) || 1;
-  const limit = 30; // locked to 30 items per page
-  const sort = { column: "created_at", ascending: false };
+  const limit = 30;
+  const sort = { column: "name", ascending: true };
 
   const { data: products, totalCount } = await getProducts({
     search: "",
@@ -33,9 +52,9 @@ export default async function ProdukPage({
         description="Katalog lengkap material drainase, infrastruktur, dan paving"
       />
 
-      {/* main content */}
+      {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Product Grid */}
+        {/* PRODUCT GRID */}
         {products.length === 0 ? (
           <p className="text-center text-gray-500">
             Belum ada produk tersedia.
@@ -49,7 +68,6 @@ export default async function ProdukPage({
                   href={`/produk/${prod.slug}`}
                   className="group w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] bg-white border border-bordergray hover:border-navy/40 hover:shadow-xl transition-all duration-300 rounded-none flex flex-col overflow-hidden"
                 >
-                  {/* Thumbnail */}
                   <div className="relative aspect-square w-full overflow-hidden bg-gray-100 border-b border-bordergray">
                     {prod.thumbnail ? (
                       <img
@@ -65,7 +83,6 @@ export default async function ProdukPage({
                     <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/10 transition-colors duration-300" />
                   </div>
 
-                  {/* Content */}
                   <div className="p-6 flex flex-col justify-between flex-grow">
                     <div className="space-y-3">
                       <h3 className="text-lg font-black font-inter text-darkslate uppercase tracking-wide group-hover:text-navy transition-colors line-clamp-2">

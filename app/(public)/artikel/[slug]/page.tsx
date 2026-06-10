@@ -1,7 +1,7 @@
-// app/artikel/[slug]/page.tsx
-import { getArticleBySlug } from "@/lib/article/article";
 import Link from "next/link";
 import { FaArrowLeft, FaUser, FaCalendarAlt } from "react-icons/fa";
+
+import { getArticleBySlug } from "@/lib/article/article";
 
 export default async function ArticleDetailPage({
   params,
@@ -41,7 +41,7 @@ export default async function ArticleDetailPage({
   return (
     <div className="bg-background min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Thumbnail at top */}
+        {/* THUMBNAIL*/}
         <div className="w-full mb-8">
           <div className="aspect-video w-full overflow-hidden bg-gray-100 border border-bordergray">
             {article.thumbnail ? (
@@ -58,8 +58,8 @@ export default async function ArticleDetailPage({
           </div>
         </div>
 
-        {/* Metadata: author and date */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-500 font-mono font-bold uppercase tracking-wider mb-4">
+        {/* AUTHOR & DATE */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-darkslate/90 font-jetbrains font-bold uppercase tracking-wider mb-4">
           {article.author && (
             <div className="flex items-center gap-1.5">
               <FaUser className="h-3.5 w-3.5 text-steelblue" />
@@ -72,12 +72,12 @@ export default async function ArticleDetailPage({
           </div>
         </div>
 
-        {/* Title */}
+        {/* TITLE */}
         <h1 className="text-2xl md:text-4xl font-black font-grotesk text-darkslate uppercase tracking-wide leading-tight mb-8">
           {article.title}
         </h1>
 
-        {/* Content (HTML) */}
+        {/* CONTENT */}
         {article.content && (
           <div
             className="prose prose-sm max-w-none text-darkslate/90 font-inter 
@@ -90,7 +90,7 @@ export default async function ArticleDetailPage({
           />
         )}
 
-        {/* Back button */}
+        {/* BACK BUTTON */}
         <Link
           href="/artikel"
           className="inline-flex items-center text-navy hover:text-steelblue text-sm font-jetbrains font-medium mt-6"

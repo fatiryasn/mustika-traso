@@ -11,6 +11,7 @@ import {
   HiOutlineUpload,
   HiOutlineArrowLeft,
   HiOutlineSave,
+  HiOutlineClipboardList,
 } from "react-icons/hi";
 import {
   getProductBySlug,
@@ -19,6 +20,7 @@ import {
   uploadProductImage,
 } from "@/lib/product/product";
 import { formatDate } from "@/lib/utils/format";
+import SubProductBulkImport from "@/components/SubProductBulkImport";
 
 interface SubProduct {
   id?: string;
@@ -46,6 +48,7 @@ export default function ProductDetailPage({
     thumbnail: string;
     subProducts: SubProduct[];
   } | null>(null);
+  const [bulkModalOpen, setBulkModalOpen] = useState(false);
 
   //EDITABLE STATES
   const [name, setName] = useState("");
@@ -182,12 +185,12 @@ export default function ProductDetailPage({
 
       await updateProductWithSubProducts({
         id: productId,
-        slug, // current slug
+        slug,
         name,
         description: description || undefined,
         thumbnail: finalThumbnailUrl || undefined,
         sub_products: subProducts.map((sp) => ({
-          id: sp.id, // might be undefined for new ones – action ignores it
+          id: sp.id,
           name: sp.name,
           size: sp.size || undefined,
           weight: sp.weight || undefined,
@@ -246,6 +249,10 @@ export default function ProductDetailPage({
         toast.error("Gagal menghapus: " + error.message);
       }
     }
+  };
+
+  const handleBulkImport = (newSubs: SubProduct[]) => {
+    setSubProducts((prev) => [...prev, ...newSubs]);
   };
 
   if (loading) {
@@ -418,16 +425,33 @@ export default function ProductDetailPage({
             Sub Produk (Varian)
           </h2>
           {mode === "edit" && (
-            <button
-              type="button"
-              onClick={addSubProduct}
-              className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-inter font-medium"
-            >
-              <HiOutlinePlus className="w-4 h-4" />
-              Tambah Varian
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setBulkModalOpen(true)}
+                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
+              >
+                <HiOutlineClipboardList className="w-4 h-4" />
+                Paste dari Spreadsheet
+              </button>
+              <button
+                type="button"
+                onClick={addSubProduct}
+                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-inter font-medium"
+              >
+                <HiOutlinePlus className="w-4 h-4" />
+                Tambah Manual
+              </button>
+            </div>
           )}
         </div>
+
+        {/* Bulk Import Modal */}
+        <SubProductBulkImport
+          isOpen={bulkModalOpen}
+          onClose={() => setBulkModalOpen(false)}
+          onImport={handleBulkImport}
+        />
 
         {subProducts.length === 0 ? (
           <p className="text-sm text-gray-400 font-inter py-2">

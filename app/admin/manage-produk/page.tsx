@@ -6,9 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   HiOutlineSearch,
   HiOutlinePlus,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiOutlineEye,
   HiOutlineSortDescending,
 } from "react-icons/hi";
 import DataTable, { type Column } from "@/components/DataTable";

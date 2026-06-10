@@ -195,20 +195,55 @@ export async function getProductBySlug(
   return data;
 }
 
-//UPDATE PRODUCT
+// UPDATE PRODUCT
 export async function updateProductWithSubProducts(
   params: UpdateProductWithSubProductsParams
 ) {
   const supabase = await createClient();
-  const { id, slug, sub_products, ...productFields } = params;
+  const { id, slug: oldSlug, sub_products, ...productFields } = params;
 
-  //master product update
+  //current product state
+  const { data: current, error: fetchError } = await supabase
+    .from("products")
+    .select("name, slug, thumbnail")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  let newSlug = oldSlug;
+
+  //generate slug
+  if (productFields.name && productFields.name !== current.name) {
+    let baseSlug = generateSlug(productFields.name);
+    let suffix = 1;
+    let candidateSlug = baseSlug;
+    while (true) {
+      const { data: existing } = await supabase
+        .from("products")
+        .select("id")
+        .eq("slug", candidateSlug)
+        .neq("id", id)
+        .maybeSingle();
+      if (!existing) break;
+      candidateSlug = `${baseSlug}-${suffix}`;
+      suffix++;
+    }
+    newSlug = candidateSlug;
+  }
+
+  //build update data
   const updateData: Record<string, any> = {};
   if (productFields.name !== undefined) updateData.name = productFields.name;
   if (productFields.description !== undefined) updateData.description = productFields.description;
   if (productFields.thumbnail !== undefined) updateData.thumbnail = productFields.thumbnail;
   updateData.updated_at = new Date().toISOString();
 
+  if (newSlug !== oldSlug) {
+    updateData.slug = newSlug;
+  }
+
+  //update
   if (Object.keys(updateData).length > 1) {
     const { error: updateError } = await supabase
       .from("products")
@@ -233,7 +268,36 @@ export async function updateProductWithSubProducts(
     if (insertError) throw new Error(insertError.message);
   }
 
+  //clean up old thumbnail
+  if (
+    productFields.thumbnail &&
+    productFields.thumbnail !== current.thumbnail &&
+    current.thumbnail
+  ) {
+    try {
+      const url = new URL(current.thumbnail);
+      const segments = url.pathname.split("/uploads/");
+      if (segments.length > 1) {
+        const filePath = segments[1];
+        const { error: storageError } = await supabase.storage
+          .from("uploads")
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error("Failed to delete old thumbnail:", storageError);
+        }
+      }
+    } catch (err) {
+      console.error("Error cleaning up old thumbnail:", err);
+    }
+  }
+
+  //revalidate paths
   revalidatePath("/admin/manage-produk");
-  revalidatePath(`/admin/manage-produk/${slug}`);
-  return { success: true };
+  revalidatePath(`/admin/manage-produk/${oldSlug}`);
+  if (newSlug !== oldSlug) {
+    revalidatePath(`/admin/manage-produk/${newSlug}`);
+  }
+
+  return { success: true, slug: newSlug };
 }

@@ -1,9 +1,30 @@
-// app/proyek/page.tsx
+import { Metadata } from "next";
+
 import { getProjects } from "@/lib/project/project";
+import { COMPANY_DATA } from "@/data/constants";
 import PublicProjectPagination from "@/components/PublicProjectPagination";
 import ProjectCard, { type ProjectCardData } from "@/components/ProjectCard";
 import PageBanner from "@/components/PageBanner";
 
+export const metadata: Metadata = {
+  title: `Portofolio Proyek & Referensi - ${COMPANY_DATA.name}`,
+  description: `Dokumentasi pengiriman dan pemasangan beton pra‑cetak ${COMPANY_DATA.name} di
+                lapangan`,
+
+   keywords: [
+    "Beton",
+    "Beton Pracetak",
+    "Beton Pracetak Medan",
+    "Beton Pracetak Sumut",
+    "Beton Medan Sumatera Utara",
+    `${COMPANY_DATA.name}`,
+    `${COMPANY_DATA.brand_name}`,
+    "Supplier Beton Pracetak",
+    "Precast Concrete",
+    `Portofolio ${COMPANY_DATA.brand_name}`,
+    `Proyek ${COMPANY_DATA.brand_name}`,
+  ],
+};
 export default async function ProyekPage({
   searchParams,
 }: {
@@ -14,7 +35,7 @@ export default async function ProyekPage({
 
   const { data, totalCount } = await getProjects({
     search: "",
-    sort: { column: "title", ascending: true },
+    sort: { column: "created_at", ascending: true },
     page: currentPage,
     limit,
   });
@@ -41,7 +62,6 @@ export default async function ProyekPage({
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
       {/* BANNER */}
-
       <PageBanner
         label=" Portofolio & Referensi"
         title="PORTOFOLIO PROYEK & REFERENSI"
@@ -49,7 +69,7 @@ export default async function ProyekPage({
                 lapangan"
       />
 
-      {/* Main content */}
+      {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {projects.length === 0 ? (
           <p className="text-center text-gray-500">

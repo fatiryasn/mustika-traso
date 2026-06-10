@@ -1,11 +1,13 @@
-// app/artikel/page.tsx
-import { getArticles } from "@/lib/article/article";
-import PublicArticlePagination from "@/components/PublicArticlePagination";
 import Link from "next/link";
+import { Metadata } from "next";
 import { FaArrowRight } from "react-icons/fa";
+
+import { getArticles } from "@/lib/article/article";
+import { COMPANY_DATA } from "@/data/constants";
+import PublicArticlePagination from "@/components/PublicArticlePagination";
 import PageBanner from "@/components/PageBanner";
 
-// Type for rendered article
+//ARTICLE CARD TYPE
 type ArticleCard = {
   id: string;
   title: string;
@@ -15,6 +17,25 @@ type ArticleCard = {
   created_at: string;
 };
 
+export const metadata: Metadata = {
+  title: `Artikel & Wawasan Beton - ${COMPANY_DATA.name}`,
+  description: `Edukasi konstruksi, pedoman pemilihan mutu beton, dan riset
+                sipil`,
+
+  keywords: [
+    "Beton",
+    "Beton Pracetak",
+    "Beton Pracetak Medan",
+    "Beton Pracetak Sumut",
+    "Beton Medan Sumatera Utara",
+    `${COMPANY_DATA.name}`,
+    `${COMPANY_DATA.brand_name}`,
+    "Supplier Beton Pracetak",
+    "Precast Concrete",
+    `Artikel ${COMPANY_DATA.brand_name}`,
+    `Blog ${COMPANY_DATA.brand_name}`,
+  ],
+};
 export default async function ArtikelPage({
   searchParams,
 }: {
@@ -43,15 +64,15 @@ export default async function ArtikelPage({
 
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
-      {/* Banner */}
+      {/* BANNER */}
       <PageBanner
         label="Wawasan & Edukasi"
-        title="ARTIKEL & WAWASAN BETON"
+        title="Artikel & Wawasan Beton"
         description="Edukasi konstruksi, pedoman pemilihan mutu beton, dan riset
                 sipil"
       />
 
-      {/* Main content */}
+      {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {articles.length === 0 ? (
           <p className="text-center text-gray-500">
@@ -66,7 +87,6 @@ export default async function ArtikelPage({
                   href={`/artikel/${article.slug}`}
                   className="group bg-white border border-bordergray hover:border-navy/40 hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden"
                 >
-                  {/* Thumbnail */}
                   <div className="relative aspect-video w-full overflow-hidden bg-gray-100 border-b border-bordergray">
                     {article.thumbnail ? (
                       <img
@@ -81,7 +101,6 @@ export default async function ArtikelPage({
                     )}
                   </div>
 
-                  {/* Content */}
                   <div className="p-6 flex flex-col justify-between flex-grow">
                     <div className="space-y-3">
                       <div className="text-xs text-darkslate/70 font-jetbrains uppercase tracking-wider">

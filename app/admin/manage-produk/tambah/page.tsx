@@ -8,8 +8,10 @@ import {
   HiOutlineTrash,
   HiOutlineUpload,
   HiOutlineArrowLeft,
+  HiOutlineClipboardList,
 } from "react-icons/hi";
 import { createProduct, uploadProductImage } from "@/lib/product/product";
+import SubProductBulkImport from "@/components/SubProductBulkImport";
 
 interface SubProduct {
   id: string;
@@ -22,7 +24,7 @@ interface SubProduct {
 export default function TambahProdukPage() {
   const router = useRouter();
 
-  //STATES
+  // STATES
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
@@ -31,7 +33,10 @@ export default function TambahProdukPage() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  //THUMBNAIL CHANGE
+  // Bulk import states
+  const [bulkModalOpen, setBulkModalOpen] = useState(false);
+
+  // THUMBNAIL CHANGE
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -40,7 +45,7 @@ export default function TambahProdukPage() {
     }
   };
 
-  //SUB PRODUCT HANDLERS
+  // SUB PRODUCT HANDLERS
   const addSubProduct = () => {
     setSubProducts((prev) => [
       ...prev,
@@ -53,9 +58,11 @@ export default function TambahProdukPage() {
       },
     ]);
   };
+
   const removeSubProduct = (id: string) => {
     setSubProducts((prev) => prev.filter((sp) => sp.id !== id));
   };
+
   const updateSubProduct = (
     id: string,
     field: keyof SubProduct,
@@ -66,7 +73,7 @@ export default function TambahProdukPage() {
     );
   };
 
-  //SUBMIT
+  // SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
@@ -111,6 +118,10 @@ export default function TambahProdukPage() {
     }
   };
 
+  const handleBulkImport = (newSubs: SubProduct[]) => {
+    setSubProducts((prev) => [...prev, ...newSubs]);
+  };
+
   return (
     <div className="space-y-6">
       {/* HEADER */}
@@ -131,7 +142,7 @@ export default function TambahProdukPage() {
         </div>
       </div>
 
-      {/* Form */}
+      {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Main Info */}
         <div className="bg-white rounded p-6 shadow-sm border border-gray-300 space-y-5">
@@ -206,14 +217,25 @@ export default function TambahProdukPage() {
             <h2 className="font-semibold text-gray-800 font-grotesk">
               Sub Produk (Varian)
             </h2>
-            <button
-              type="button"
-              onClick={addSubProduct}
-              className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
-            >
-              <HiOutlinePlus className="w-4 h-4" />
-              Tambah Varian
-            </button>
+            <div className="flex items-center gap-4">
+              {/* Bulk Import Button */}
+              <button
+                type="button"
+                onClick={() => setBulkModalOpen(true)}
+                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
+              >
+                <HiOutlineClipboardList className="w-4 h-4" />
+                Paste dari Spreadsheet
+              </button>
+              <button
+                type="button"
+                onClick={addSubProduct}
+                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
+              >
+                <HiOutlinePlus className="w-4 h-4" />
+                Tambah Manual
+              </button>
+            </div>
           </div>
 
           {subProducts.length > 0 ? (
@@ -296,8 +318,8 @@ export default function TambahProdukPage() {
             </div>
           ) : (
             <p className="text-sm text-gray-400 font-manrope py-2">
-              Belum ada varian. Klik &quot;Tambah Varian&quot; untuk
-              menambahkan.
+              Belum ada varian. Gunakan paste spreadsheet atau klik "Tambah
+              Manual" untuk menambahkan.
             </p>
           )}
         </div>
@@ -320,6 +342,12 @@ export default function TambahProdukPage() {
           </button>
         </div>
       </form>
+
+      <SubProductBulkImport
+        isOpen={bulkModalOpen}
+        onClose={() => setBulkModalOpen(false)}
+        onImport={handleBulkImport}
+      />
     </div>
   );
 }

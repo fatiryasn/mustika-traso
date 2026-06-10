@@ -1,14 +1,35 @@
+import { Metadata } from "next";
 import { FaPhone, FaWhatsapp, FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
+
+import { COMPANY_DATA } from "@/data/constants";
 import ContactForm from "@/components/ContactForm";
 import PageBanner from "@/components/PageBanner";
 
+export const metadata: Metadata = {
+  title: `Kontak - ${COMPANY_DATA.name}`,
+  description: `Hubungi ${COMPANY_DATA.name} untuk dapatkan informasi produk, harga, dan konsultasi teknis`,
+
+  keywords: [
+    "Beton",
+    "Beton Pracetak",
+    "Beton Pracetak Medan",
+    "Beton Pracetak Sumut",
+    "Beton Medan Sumatera Utara",
+    `${COMPANY_DATA.name}`,
+    `${COMPANY_DATA.brand_name}`,
+    "Supplier Beton Pracetak",
+    "Precast Concrete",
+    `Kontak ${COMPANY_DATA.brand_name}`,
+    `Hubungi ${COMPANY_DATA.brand_name}`,
+  ],
+};
 export default function KontakPage() {
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
       {/* BANNER */}
       <PageBanner
         label="Hubungi Kami"
-        title="KONTAK MUSTIKA TRASO"
+        title={`Kontak ${COMPANY_DATA.brand_name}`}
         description="Dapatkan informasi produk, harga, dan konsultasi teknis"
       />
       {/* MAIN CONTENT */}
@@ -43,10 +64,10 @@ export default function KontakPage() {
               Telepon
             </h3>
             <a
-              href="tel:082235495524"
+              href={`tel:${COMPANY_DATA.phone_number}`}
               className="text-darkslate/90 text-sm font-semibold font-inter hover:text-navy transition-colors"
             >
-              0822-3549-5524
+              +{COMPANY_DATA.phone_number}
             </a>
           </div>
 
@@ -59,12 +80,12 @@ export default function KontakPage() {
               WhatsApp
             </h3>
             <a
-              href="https://wa.me/628126588348"
+              href={`https://wa.me/${COMPANY_DATA.wa_number}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-darkslate/90 text-sm font-semibold font-inter hover:text-navy transition-colors"
             >
-              0812-6588-348
+              +{COMPANY_DATA.wa_number}
             </a>
           </div>
 
@@ -87,7 +108,7 @@ export default function KontakPage() {
           </div>
         </div>
 
-        {/* Two-column: Form + Map */}
+        {/* FORM & MAP */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* WhatsApp Form */}
           <ContactForm />

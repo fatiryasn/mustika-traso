@@ -1,7 +1,8 @@
-// app/produk/[slug]/page.tsx
-import { getProductBySlug } from "@/lib/product/product";
 import Link from "next/link";
 import { FaArrowLeft, FaWhatsapp } from "react-icons/fa";
+
+import { getProductBySlug } from "@/lib/product/product";
+import { COMPANY_DATA } from "@/data/constants";
 
 export default async function ProductDetailPage({
   params,
@@ -29,26 +30,18 @@ export default async function ProductDetailPage({
     );
   }
 
-  // WhatsApp message template
-  const whatsappNumber = "628126588348";
+  //WA TEMPLATE
+  const whatsappNumber = COMPANY_DATA.wa_number;
   const message = `Halo, saya tertarik dengan produk ${product.name}. Bisa info lebih lanjut?`;
   const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
   return (
     <div className="bg-background min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back button */}
-        <Link
-          href="/produk"
-          className="inline-flex items-center text-navy hover:text-steelblue text-sm font-jetbrains font-medium mb-8"
-        >
-          <FaArrowLeft className="mr-2" /> Kembali ke Katalog Produk
-        </Link>
-
-        {/* Product detail card */}
+        {/* PRODUCT CARD */}
         <div className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
-            {/* Thumbnail – tall ratio */}
+            {/* THUMBNAIL */}
             <div className="md:col-span-2 pl-0 md:pl-5 py-5">
               <div className="aspect-[3/4] w-full max-h-[25rem] sm:max-h-[30rem] md:max-h-max overflow-hidden bg-gray-100 border border-bordergray">
                 {product.thumbnail ? (
@@ -65,7 +58,7 @@ export default async function ProductDetailPage({
               </div>
             </div>
 
-            {/* Product info – right column */}
+            {/* RIGHT */}
             <div className="md:col-span-3 p-5 md:p-7 lg:p-10 flex flex-col justify-center">
               <h1 className="text-2xl md:text-5xl font-black font-grotesk text-darkslate uppercase tracking-wide leading-tight">
                 {product.name}
@@ -77,7 +70,6 @@ export default async function ProductDetailPage({
                 </div>
               )}
 
-              {/* Divider with WhatsApp button */}
               <div className="mt-6 pt-6 border-t border-bordergray/60">
                 <h2 className="text-xs font-bold text-steelblue font-jetbrains uppercase tracking-widest mb-2">
                   Informasi Produk
@@ -87,7 +79,6 @@ export default async function ProductDetailPage({
                   penawaran terbaik.
                 </p>
 
-                {/* WhatsApp button – personalized message */}
                 <a
                   href={waLink}
                   target="_blank"
@@ -101,7 +92,7 @@ export default async function ProductDetailPage({
             </div>
           </div>
 
-          {/* Sub Products Table */}
+          {/* SUB PRODUCTS */}
           {product.sub_products && product.sub_products.length > 0 && (
             <div className="p-5 md:p-7 lg:p-10">
               <h2 className="text-lg font-bold font-inter text-darkslate uppercase tracking-wide mb-6">
@@ -153,6 +144,14 @@ export default async function ProductDetailPage({
             </div>
           )}
         </div>
+
+        {/* BACK BUTTON */}
+        <Link
+          href="/produk"
+          className="inline-flex items-center text-navy hover:text-steelblue text-sm font-jetbrains font-medium mt-8"
+        >
+          <FaArrowLeft className="mr-2" /> Kembali ke Katalog Produk
+        </Link>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
-// app/proyek/[slug]/page.tsx
-import { getProjectBySlug } from "@/lib/project/project";
 import Link from "next/link";
 import { FaArrowLeft, FaWhatsapp } from "react-icons/fa";
+
+import { getProjectBySlug } from "@/lib/project/project";
+import { COMPANY_DATA } from "@/data/constants";
 
 export default async function ProjectDetailPage({
   params,
@@ -40,9 +41,8 @@ export default async function ProjectDetailPage({
   return (
     <div className="bg-background min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Side‑by‑side layout: image left, data right */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-3 lg:gap-6">
-          {/* Image – left column, near‑square ratio */}
+          {/* LEFT IMAGE */}
           <div className="md:col-span-3 p-5 md:p-10 lg:p-5">
             <div className="aspect-[4/3] w-full overflow-hidden bg-gray-100 border border-bordergray">
               {project.thumbnail ? (
@@ -59,7 +59,7 @@ export default async function ProjectDetailPage({
             </div>
           </div>
 
-          {/* Data – right column */}
+          {/* RIGHT DATA */}
           <div className="md:col-span-2 flex flex-col justify-center">
             <h1 className="text-2xl md:text-4xl font-black font-grotesk text-darkslate uppercase tracking-wide leading-tight">
               {project.title}
@@ -83,10 +83,9 @@ export default async function ProjectDetailPage({
               </p>
             )}
 
-            {/* WhatsApp CTA */}
             <div className="mt-8 pt-6 border-t border-bordergray/60">
               <a
-                href="https://wa.me/628126588348"
+                href={`https://wa.me/${COMPANY_DATA.wa_number}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-green-700 transition-colors rounded-none"
