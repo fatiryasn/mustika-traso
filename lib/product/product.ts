@@ -40,13 +40,43 @@ export async function getProducts({
   };
 }
 
-//DELETE PRODUCT (missing delete image from bucket)
+//DELETE PRODUCT
 export async function deleteProduct(id: string) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("products").delete().eq("id", id);
+  const { data: product, error: fetchError } = await supabase
+    .from("products")
+    .select("thumbnail")
+    .eq("id", id)
+    .single();
 
-  if (error) throw new Error(error.message);
+  if (fetchError) throw new Error(fetchError.message);
+
+  const { error: deleteError } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", id);
+
+  if (deleteError) throw new Error(deleteError.message);
+
+  if (product?.thumbnail) {
+    try {
+      const url = new URL(product.thumbnail);
+      const segments = url.pathname.split("/uploads/");
+      if (segments.length > 1) {
+        const filePath = segments[1];
+        const { error: storageError } = await supabase.storage
+          .from("uploads")
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error("Failed to delete product thumbnail from storage:", storageError);
+        }
+      }
+    } catch (err) {
+      console.error("Error cleaning up product thumbnail file:", err);
+    }
+  }
 
   revalidatePath("/admin/manage-produk");
 }

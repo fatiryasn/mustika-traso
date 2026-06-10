@@ -41,13 +41,43 @@ export async function getProjects({
   };
 }
 
-//DELETE PROJECT (missing delete image from bucket)
+// DELETE PROJECT
 export async function deleteProject(id: string) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("projects").delete().eq("id", id);
+  const { data: project, error: fetchError } = await supabase
+    .from("projects")
+    .select("thumbnail")
+    .eq("id", id)
+    .single();
 
-  if (error) throw new Error(error.message);
+  if (fetchError) throw new Error(fetchError.message);
+
+  const { error: deleteError } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", id);
+
+  if (deleteError) throw new Error(deleteError.message);
+
+  if (project?.thumbnail) {
+    try {
+      const url = new URL(project.thumbnail);
+      const segments = url.pathname.split("/uploads/");
+      if (segments.length > 1) {
+        const filePath = segments[1]; 
+        const { error: storageError } = await supabase.storage
+          .from("uploads")
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error("Failed to delete thumbnail from storage:", storageError);
+        }
+      }
+    } catch (err) {
+      console.error("Error cleaning up thumbnail file:", err);
+    }
+  }
 
   revalidatePath("/admin/manage-proyek");
 }

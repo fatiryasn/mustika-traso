@@ -37,7 +37,7 @@ export default function TentangKamiPage() {
       <PageBanner
         label="Perusahaan"
         title="TENTANG KAMI"
-        description="Mengenal visi, misi, dan nilai kredibilitas PT. Mustika Trasu"
+        description="Mengenal visi, misi, dan nilai kredibilitas PT. Mustika Traso"
       />
 
       {/* MAIN CONTENT */}
@@ -216,7 +216,7 @@ export default function TentangKamiPage() {
                 src: "/field-pictures/image7.jpeg",
                 alt: "Operasional 7",
                 colSpan: "sm:col-span-1 lg:col-span-2",
-                rowSpan: "sm:row-span-1", // wide
+                rowSpan: "sm:row-span-1", 
               },
             ].map((img, idx) => (
               <div

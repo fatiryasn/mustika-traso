@@ -41,11 +41,44 @@ export async function getArticles({
   };
 }
 
-//DELETE ARTICLE (missing delete image from bucket)
+//DELETE ARTICLE
 export async function deleteArticle(id: string) {
   const supabase = await createClient();
-  const { error } = await supabase.from("articles").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+
+  const { data: article, error: fetchError } = await supabase
+    .from("articles")
+    .select("thumbnail")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  const { error: deleteError } = await supabase
+    .from("articles")
+    .delete()
+    .eq("id", id);
+
+  if (deleteError) throw new Error(deleteError.message);
+
+  if (article?.thumbnail) {
+    try {
+      const url = new URL(article.thumbnail);
+      const segments = url.pathname.split("/uploads/");
+      if (segments.length > 1) {
+        const filePath = segments[1];
+        const { error: storageError } = await supabase.storage
+          .from("uploads")
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error("Failed to delete article image from storage:", storageError);
+        }
+      }
+    } catch (err) {
+      console.error("Error cleaning up article image file:", err);
+    }
+  }
+
   revalidatePath("/admin/manage-artikel");
 }
 
