@@ -2,7 +2,48 @@ import Link from "next/link";
 import { FaArrowLeft, FaUser, FaCalendarAlt } from "react-icons/fa";
 
 import { getArticleBySlug } from "@/lib/article/article";
+import { Metadata } from "next";
+import { COMPANY_DATA } from "@/data/constants";
 
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+//metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    return {
+      title: "Artikel tidak ditemukan",
+    };
+  }
+
+  return {
+    title: article.title,
+    description: article.excerpt ?? article.title,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt ?? article.title,
+      images: article.thumbnail ? [article.thumbnail] : [],
+      type: "article",
+      publishedTime: article.created_at,
+      authors: article.author ? [article.author] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt ?? article.title,
+      images: article.thumbnail ? [article.thumbnail] : [],
+    },
+    alternates: {
+      canonical: `${COMPANY_DATA.base_url}/artikel/${slug}`,
+    },
+  };
+}
+
+//main component
 export default async function ArticleDetailPage({
   params,
 }: {

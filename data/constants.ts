@@ -1,4 +1,5 @@
 export const COMPANY_DATA = {
+  base_url: "https://mustika-traso.vercel.app",
   name: "PT. Mustika Traso",
   brand_name: "Mustika Traso",
   wa_number: "628126588348",

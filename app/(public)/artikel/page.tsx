@@ -7,7 +7,7 @@ import { COMPANY_DATA } from "@/data/constants";
 import PublicArticlePagination from "@/components/PublicArticlePagination";
 import PageBanner from "@/components/PageBanner";
 
-//ARTICLE CARD TYPE
+// ARTICLE CARD TYPE
 type ArticleCard = {
   id: string;
   title: string;
@@ -17,31 +17,71 @@ type ArticleCard = {
   created_at: string;
 };
 
-export const metadata: Metadata = {
-  title: `Artikel & Wawasan Beton - ${COMPANY_DATA.name}`,
-  description: `Edukasi konstruksi, pedoman pemilihan mutu beton, dan riset
-                sipil`,
+//metadata
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}): Promise<Metadata> {
+  const { page: pageParam } = await searchParams;
+  const currentPage = Number(pageParam) || 1;
 
-  keywords: [
-    "Beton",
-    "Beton Pracetak",
-    "Beton Pracetak Medan",
-    "Beton Pracetak Sumut",
-    "Beton Medan Sumatera Utara",
-    `${COMPANY_DATA.name}`,
-    `${COMPANY_DATA.brand_name}`,
-    "Supplier Beton Pracetak",
-    "Precast Concrete",
-    `Artikel ${COMPANY_DATA.brand_name}`,
-    `Blog ${COMPANY_DATA.brand_name}`,
-  ],
-};
+  const title =
+    currentPage > 1
+      ? `Artikel & Wawasan Beton - ${COMPANY_DATA.name} - Halaman ${currentPage}`
+      : `Artikel & Wawasan Beton - ${COMPANY_DATA.name}`;
+
+  const description =
+    currentPage > 1
+      ? `Artikel dan edukasi konstruksi ${COMPANY_DATA.name} – Halaman ${currentPage}`
+      : `Edukasi konstruksi, pedoman pemilihan mutu beton, dan riset sipil`;
+
+  const canonicalUrl = `${COMPANY_DATA.base_url}/artikel${currentPage > 1 ? `?page=${currentPage}` : ""}`;
+
+  return {
+    title,
+    description,
+    keywords: [
+      "Beton",
+      "Beton Pracetak",
+      "Beton Pracetak Medan",
+      "Beton Pracetak Sumut",
+      "Beton Medan Sumatera Utara",
+      COMPANY_DATA.name,
+      COMPANY_DATA.brand_name,
+      "Supplier Beton Pracetak",
+      "Precast Concrete",
+      `Artikel ${COMPANY_DATA.brand_name}`,
+      `Blog ${COMPANY_DATA.brand_name}`,
+    ],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      images: ["/og-image.png"],
+      url: canonicalUrl,
+      siteName: COMPANY_DATA.name,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
+  };
+}
+
+//main component
 export default async function ArtikelPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const currentPage = Number(searchParams.page) || 1;
+  const { page: pageParam } = await searchParams;
+  const currentPage = Number(pageParam) || 1;
   const limit = 30;
 
   const { data, totalCount } = await getArticles({
@@ -68,8 +108,7 @@ export default async function ArtikelPage({
       <PageBanner
         label="Wawasan & Edukasi"
         title="Artikel & Wawasan Beton"
-        description="Edukasi konstruksi, pedoman pemilihan mutu beton, dan riset
-                sipil"
+        description="Edukasi konstruksi, pedoman pemilihan mutu beton, dan riset sipil"
       />
 
       {/* MAIN CONTENT */}

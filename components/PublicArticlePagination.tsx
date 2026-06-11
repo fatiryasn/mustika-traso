@@ -26,9 +26,6 @@ export default function PublicArticlePagination({
     router.push(`/artikel?${params.toString()}`);
   };
 
-  const handleLimitChange = (_newLimit: number) => {
-    // fixed limit, no-op
-  };
 
   return (
     <Pagination
@@ -37,8 +34,7 @@ export default function PublicArticlePagination({
       onPageChange={handlePageChange}
       totalItems={totalItems}
       limit={LIMIT}
-      onLimitChange={handleLimitChange}
-      limitOptions={[LIMIT]}
+      variant="public"
     />
   );
 }

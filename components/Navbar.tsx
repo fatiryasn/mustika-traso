@@ -58,7 +58,7 @@ const Navbar = () => {
               <img
                 src={logoSrc}
                 alt="Mustika Traso Logo"
-                className="h-8 md:h-12 xl:h-16 w-auto"
+                className="h-10 md:h-12 xl:h-16 w-auto"
               />
             </Link>
           </div>

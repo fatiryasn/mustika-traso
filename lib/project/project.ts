@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Project, GetProjectsParams } from "@/types/Project";
 import { generateSlug } from "../utils/generateSlug";
+import { cache } from "react";
 
 //GET PROJECTS
 export async function getProjects({
@@ -65,13 +66,16 @@ export async function deleteProject(id: string) {
       const url = new URL(project.thumbnail);
       const segments = url.pathname.split("/uploads/");
       if (segments.length > 1) {
-        const filePath = segments[1]; 
+        const filePath = segments[1];
         const { error: storageError } = await supabase.storage
           .from("uploads")
           .remove([filePath]);
 
         if (storageError) {
-          console.error("Failed to delete thumbnail from storage:", storageError);
+          console.error(
+            "Failed to delete thumbnail from storage:",
+            storageError,
+          );
         }
       }
     } catch (err) {
@@ -155,20 +159,22 @@ export async function createProject(formData: {
 }
 
 //GET PROJECT BY SLUG
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("slug", slug)
-    .single();
+export const getProjectBySlug = cache(
+  async (slug: string): Promise<Project | null> => {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("slug", slug)
+      .single();
 
-  if (error) {
-    console.error("Error fetching project by slug:", error);
-    return null;
-  }
-  return data;
-}
+    if (error) {
+      console.error("Error fetching project by slug:", error);
+      return null;
+    }
+    return data;
+  },
+);
 
 //UPDATE PROJECT
 export async function updateProject(params: {
@@ -216,9 +222,12 @@ export async function updateProject(params: {
   //build update data
   const updateData: Record<string, any> = {};
   if (fields.title !== undefined) updateData.title = fields.title;
-  if (fields.description !== undefined) updateData.description = fields.description;
-  if (fields.client_name !== undefined) updateData.client_name = fields.client_name;
-  if (fields.project_date !== undefined) updateData.project_date = fields.project_date;
+  if (fields.description !== undefined)
+    updateData.description = fields.description;
+  if (fields.client_name !== undefined)
+    updateData.client_name = fields.client_name;
+  if (fields.project_date !== undefined)
+    updateData.project_date = fields.project_date;
   if (fields.thumbnail !== undefined) updateData.thumbnail = fields.thumbnail;
 
   if (newSlug !== oldSlug) {
@@ -253,7 +262,10 @@ export async function updateProject(params: {
           .remove([filePath]);
 
         if (storageError) {
-          console.error("Failed to delete old project thumbnail:", storageError);
+          console.error(
+            "Failed to delete old project thumbnail:",
+            storageError,
+          );
         }
       }
     } catch (err) {
@@ -269,4 +281,16 @@ export async function updateProject(params: {
   }
 
   return { success: true, slug: newSlug };
+}
+
+export async function getProjectSlugs(): Promise<string[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("projects").select("slug");
+
+  if (error) {
+    console.error("Error fetching project slugs:", error);
+    return [];
+  }
+
+  return (data ?? []).map((p) => p.slug);
 }

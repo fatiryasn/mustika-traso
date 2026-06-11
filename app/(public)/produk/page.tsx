@@ -7,30 +7,71 @@ import { COMPANY_DATA } from "@/data/constants";
 import PublicProductPagination from "@/components/PublicProductPagination";
 import PageBanner from "@/components/PageBanner";
 
-export const metadata: Metadata = {
-  title: `Produk Beton Pracetak - ${COMPANY_DATA.name}`,
-  description: `Katalog lengkap ${COMPANY_DATA.name}, produk beton pracetak untuk drainase, infrastruktur, dan paving`,
+//metadata
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}): Promise<Metadata> {
+  const { page: pageParam } = await searchParams;
+  const currentPage = Number(pageParam) || 1;
 
-   keywords: [
-    "Beton",
-    "Beton Pracetak",
-    "Beton Pracetak Medan",
-    "Beton Pracetak Sumut",
-    "Beton Medan Sumatera Utara",
-    `${COMPANY_DATA.name}`,
-    `${COMPANY_DATA.brand_name}`,
-    "Supplier Beton Pracetak",
-    "Precast Concrete",
-    `Katalog Produk ${COMPANY_DATA.brand_name}`,
-    `Produk Beton ${COMPANY_DATA.brand_name}`,
-  ],
-};
+  const title =
+    currentPage > 1
+      ? `Produk Beton Pracetak - ${COMPANY_DATA.name} - Halaman ${currentPage}`
+      : `Produk Beton Pracetak - ${COMPANY_DATA.name}`;
+
+  const description =
+    currentPage > 1
+      ? `Katalog produk beton pracetak ${COMPANY_DATA.name} – Halaman ${currentPage}`
+      : `Katalog lengkap ${COMPANY_DATA.name}, produk beton pracetak untuk drainase, infrastruktur, dan paving`;
+
+  const canonicalUrl = `${COMPANY_DATA.base_url}/produk${currentPage > 1 ? `?page=${currentPage}` : ""}`;
+
+  return {
+    title,
+    description,
+    keywords: [
+      "Beton",
+      "Beton Pracetak",
+      "Beton Pracetak Medan",
+      "Beton Pracetak Sumut",
+      "Beton Medan Sumatera Utara",
+      COMPANY_DATA.name,
+      COMPANY_DATA.brand_name,
+      "Supplier Beton Pracetak",
+      "Precast Concrete",
+      `Katalog Produk ${COMPANY_DATA.brand_name}`,
+      `Produk Beton ${COMPANY_DATA.brand_name}`,
+    ],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      images: ["/og-image.png"],
+      url: canonicalUrl,
+      siteName: COMPANY_DATA.name,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
+  };
+}
+
+//main component
 export default async function ProdukPage({
   searchParams,
 }: {
-  searchParams: { page?: string; limit?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const currentPage = Number(searchParams.page) || 1;
+  const { page: pageParam } = await searchParams;
+  const currentPage = Number(pageParam) || 1;
   const limit = 30;
   const sort = { column: "name", ascending: true };
 
@@ -45,7 +86,7 @@ export default async function ProdukPage({
 
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
-      {/* BANNER */}
+      {/* BANNER  */}
       <PageBanner
         label="Katalog Lengkap"
         title="PRODUK BETON PRACETAK"
@@ -54,7 +95,6 @@ export default async function ProdukPage({
 
       {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* PRODUCT GRID */}
         {products.length === 0 ? (
           <p className="text-center text-gray-500">
             Belum ada produk tersedia.

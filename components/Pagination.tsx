@@ -8,8 +8,9 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
   totalItems: number;
   limit: number;
-  onLimitChange: (limit: number) => void;
+  onLimitChange?: (limit: number) => void;
   limitOptions?: number[];
+  variant?: "admin" | "public"; 
 }
 
 export default function Pagination({
@@ -20,35 +21,47 @@ export default function Pagination({
   limit,
   onLimitChange,
   limitOptions = [15, 30, 50],
+  variant = "admin", 
 }: PaginationProps) {
   if (totalItems === 0) return null;
 
+  //item range
+  const startItem = (currentPage - 1) * limit + 1;
+  const endItem = Math.min(currentPage * limit, totalItems);
+  const rangeVisual = startItem === endItem ? endItem : `${startItem}-${endItem}`
+
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-gray-100 bg-navy/10">
-      {/* Limit selector */}
-      <div className="flex items-center gap-2 text-sm text-darkslate font-grotesk">
-        <span>Tampilkan</span>
-        <select
-          value={limit}
-          onChange={(e) => onLimitChange(Number(e.target.value))}
-          className="border border-gray-400 rounded-sm py-1 pl-2 pr-7 text-sm focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none bg-white font-jetbrains"
-        >
-          {limitOptions.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-        <span>dari {totalItems} data</span>
-      </div>
+      {/* LEFT */}
+      {variant === "admin" ? (
+        <div className="flex items-center gap-2 text-sm text-darkslate font-grotesk">
+          <span>Tampilkan</span>
+          <select
+            value={limit}
+            onChange={(e) => onLimitChange?.(Number(e.target.value))}
+            className="border border-gray-400 rounded-sm py-1 pl-2 pr-7 text-sm focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none bg-white font-jetbrains"
+          >
+            {limitOptions.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+          <span>dari {totalItems} data</span>
+        </div>
+      ) : (
+        <div className="text-sm text-darkslate font-grotesk">
+          Menampilkan {rangeVisual} dari {totalItems} entri
+        </div>
+      )}
 
-      {/* Page navigation */}
+      {/* RIGHT SIDE */}
       {totalPages > 1 && (
         <div className="flex items-center gap-2">
           <button
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="p-1.5 rounded-lg hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-cyan-50 disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 transition-colors cursor-pointer"
           >
             <HiOutlineChevronLeft className="w-5 h-5" />
           </button>
@@ -59,10 +72,10 @@ export default function Pagination({
                 <button
                   key={pageNum}
                   onClick={() => onPageChange(pageNum)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors font-jetbrains ${
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors font-jetbrains cursor-pointer ${
                     pageNum === currentPage
                       ? "bg-navy text-white font-medium"
-                      : "hover:bg-gray-200 text-gray-600"
+                      : "hover:bg-cyan-50 text-gray-600"
                   }`}
                 >
                   {pageNum}
@@ -74,7 +87,7 @@ export default function Pagination({
           <button
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
-            className="p-1.5 rounded-lg hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-cyan-50 disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 transition-colors cursor-pointer"
           >
             <HiOutlineChevronRight className="w-5 h-5" />
           </button>

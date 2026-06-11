@@ -71,15 +71,18 @@ async function fetchHomeData() {
   return { products, projects };
 }
 
+//metadata
 export const metadata: Metadata = {
   title: `${COMPANY_DATA.name} - Beton Pracetak Kualitas Tinggi`,
-  description: `${COMPANY_DATA.name} adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.`,
+  description: `${COMPANY_DATA.name} - Supplier beton pracetak terpercaya di Medan. Mutu terjamin, kekuatan tekan teruji, pengiriman tepat. Dukung proyek infrastruktur Anda.`,
 
   icons: {
     icon: "/favicon.ico",
   },
-
-   keywords: [
+  alternates: {
+    canonical: COMPANY_DATA.base_url,
+  },
+  keywords: [
     "Beton",
     "Beton Pracetak",
     "Beton Pracetak Medan",
@@ -93,20 +96,21 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: `${COMPANY_DATA.name} - Beton Pracetak Kualitas Tinggi`,
+    description: `${COMPANY_DATA.name} - Supplier beton pracetak terpercaya di Medan. Mutu terjamin, kekuatan tekan teruji, pengiriman tepat. Dukung proyek infrastruktur Anda.`,
     images: ["/og-image.png"],
-    description: `${COMPANY_DATA.name} adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.`,
-    url: "https://mustika-traso.vercel.app",
-    siteName: "Mustika Traso Medan",
+    url: COMPANY_DATA.base_url,
+    siteName: COMPANY_DATA.name,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: `${COMPANY_DATA.name} - Beton Pracetak Kualitas Tinggi`,
-    description: `${COMPANY_DATA.name} adalah penyedia utama beton pra-cetak (precast) berlokasi di Medan, Sumatera Utara. Berstandar industri nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan pengiriman logistik untuk mendukung proyek infrastruktur Anda.`,
+    description: `${COMPANY_DATA.name} - Supplier beton pracetak terpercaya di Medan. Mutu terjamin, kekuatan tekan teruji, pengiriman tepat. Dukung proyek infrastruktur Anda.`,
     images: ["/og-image.png"],
   },
 };
 
+//main component
 export default async function HomePage() {
   const { products, projects } = await fetchHomeData();
 
@@ -139,9 +143,9 @@ export default async function HomePage() {
                 SIAP KIRIM
               </h1>
               <p className="text-white/90 font-inter text-sm sm:text-base md:text-lg max-w-lg lg:mb-8 leading-relaxed">
-                Penyedia utama beton pra-cetak (precast) berstandar industri
-                nasional dengan mutu andal, kekuatan tekan teruji, dan ketepatan
-                pengiriman logistik untuk mendukung proyek infrastruktur Anda.
+                {COMPANY_DATA.name} - Supplier beton pracetak terpercaya di Medan,
+                Sumatera Utara, dengan mutu terjamin, kekuatan tekan teruji, dan
+                pengiriman tepat untuk mendukung proyek infrastruktur Anda.
               </p>
               <div className="hidden lg:flex flex-wrap gap-4">
                 <Link
@@ -248,12 +252,12 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* HEADER */}
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold text-steelblue font-jetbrains tracking-widest uppercase mb-3">
+            <p className="text-xs font-bold text-steelblue font-jetbrains tracking-widest uppercase mb-3">
               Keunggulan Layanan Kami
-            </h2>
-            <p className="text-3xl sm:text-4xl md:text-5xl font-black font-grotesk text-darkslate tracking-tight uppercase">
-              REKAYASA BETON PRESISI TINGGI
             </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-grotesk text-darkslate tracking-tight uppercase">
+              REKAYASA BETON PRESISI TINGGI
+            </h2>
             <div className="h-1 w-16 bg-navy mx-auto mt-4" />
             <p className="text-darkslate/90 text-sm mt-5 leading-relaxed font-inter max-w-2xl mx-auto">
               Kami mematuhi rekayasa teknis ketat dari material homogen hingga
@@ -314,12 +318,12 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-bordergray pb-6">
             <div>
-              <h2 className="text-xs font-bold text-steelblue font-jetbrains uppercase mb-3">
+              <p className="text-xs font-bold text-steelblue font-jetbrains uppercase mb-3">
                 Sistem Drainase & Paving Terintegrasi
-              </h2>
-              <p className="text-4xl font-black font-grotesk text-darkslate tracking-tight uppercase">
-                KATALOG MATERIAL UTAMA
               </p>
+              <h2 className="text-4xl font-black font-grotesk text-darkslate tracking-tight uppercase">
+                KATALOG MATERIAL UTAMA
+              </h2>
             </div>
             <Link
               href="/produk"
@@ -394,12 +398,12 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-bordergray pb-6">
             <div>
-              <h2 className="text-xs font-bold text-steelblue font-jetbrains tracking-widest uppercase mb-3">
+              <p className="text-xs font-bold text-steelblue font-jetbrains tracking-widest uppercase mb-3">
                 Hasil Pelaksanaan Lapangan
-              </h2>
-              <p className="text-4xl font-black font-grotesk text-darkslate tracking-tight uppercase">
-                DOKUMENTASI INSTALASI PROYEK
               </p>
+              <h2 className="text-4xl font-black font-grotesk text-darkslate tracking-tight uppercase">
+                DOKUMENTASI INSTALASI PROYEK
+              </h2>
             </div>
             <Link
               href="/proyek"

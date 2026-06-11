@@ -15,6 +15,9 @@
 html {
   font-size: 14px;
 }
+button{
+  cursor: pointer;
+}
 
 @theme inline {
   --color-background: var(--background);

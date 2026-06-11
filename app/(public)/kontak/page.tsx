@@ -5,6 +5,7 @@ import { COMPANY_DATA } from "@/data/constants";
 import ContactForm from "@/components/ContactForm";
 import PageBanner from "@/components/PageBanner";
 
+//metadata
 export const metadata: Metadata = {
   title: `Kontak - ${COMPANY_DATA.name}`,
   description: `Hubungi ${COMPANY_DATA.name} untuk dapatkan informasi produk, harga, dan konsultasi teknis`,
@@ -22,7 +23,28 @@ export const metadata: Metadata = {
     `Kontak ${COMPANY_DATA.brand_name}`,
     `Hubungi ${COMPANY_DATA.brand_name}`,
   ],
+
+  alternates: {
+    canonical: `${COMPANY_DATA.base_url}/kontak`,
+  },
+
+  openGraph: {
+    title: `Kontak - ${COMPANY_DATA.name}`,
+    description: `Hubungi ${COMPANY_DATA.name} untuk dapatkan informasi produk, harga, dan konsultasi teknis`,
+    images: ["/og-image.png"],
+    url: `${COMPANY_DATA.base_url}/kontak`,
+    siteName: COMPANY_DATA.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Kontak - ${COMPANY_DATA.name}`,
+    description: `Hubungi ${COMPANY_DATA.name} untuk dapatkan informasi produk, harga, dan konsultasi teknis`,
+    images: ["/og-image.png"],
+  },
 };
+
+//kontak page
 export default function KontakPage() {
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
@@ -32,6 +54,7 @@ export default function KontakPage() {
         title={`Kontak ${COMPANY_DATA.brand_name}`}
         description="Dapatkan informasi produk, harga, dan konsultasi teknis"
       />
+
       {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* CARDS */}

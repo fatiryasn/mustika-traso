@@ -2,8 +2,14 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { Product, GetProductsParams, ProductDetail, UpdateProductWithSubProductsParams } from "@/types/Product";
+import {
+  Product,
+  GetProductsParams,
+  ProductDetail,
+  UpdateProductWithSubProductsParams,
+} from "@/types/Product";
 import { generateSlug } from "@/lib/utils/generateSlug";
+import { cache } from "react";
 
 //GET PRODUCTS
 export async function getProducts({
@@ -70,7 +76,10 @@ export async function deleteProduct(id: string) {
           .remove([filePath]);
 
         if (storageError) {
-          console.error("Failed to delete product thumbnail from storage:", storageError);
+          console.error(
+            "Failed to delete product thumbnail from storage:",
+            storageError,
+          );
         }
       }
     } catch (err) {
@@ -118,7 +127,7 @@ export async function uploadProductImage(formData: FormData): Promise<string> {
 export async function createProduct(formData: {
   name: string;
   description?: string;
-  thumbnail?: string; 
+  thumbnail?: string;
   sub_products: {
     name: string;
     size?: string;
@@ -178,26 +187,27 @@ export async function createProduct(formData: {
 }
 
 //GET PRODUCT BY SLUG
-export async function getProductBySlug(
-  slug: string
-): Promise<ProductDetail | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("*, sub_products(*)")
-    .eq("slug", slug)
-    .single();
+export const getProductBySlug = cache(
+  async (slug: string): Promise<ProductDetail | null> => {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*, sub_products(*)")
+      .eq("slug", slug)
+      .single();
 
-  if (error) {
-    console.error("Error fetching product:", error);
-    return null;
-  }
-  return data;
-}
+    if (error) {
+      console.error("Error fetching product:", error);
+      return null;
+    }
+    return data;
+  },
+);
+
 
 // UPDATE PRODUCT
 export async function updateProductWithSubProducts(
-  params: UpdateProductWithSubProductsParams
+  params: UpdateProductWithSubProductsParams,
 ) {
   const supabase = await createClient();
   const { id, slug: oldSlug, sub_products, ...productFields } = params;
@@ -235,8 +245,10 @@ export async function updateProductWithSubProducts(
   //build update data
   const updateData: Record<string, any> = {};
   if (productFields.name !== undefined) updateData.name = productFields.name;
-  if (productFields.description !== undefined) updateData.description = productFields.description;
-  if (productFields.thumbnail !== undefined) updateData.thumbnail = productFields.thumbnail;
+  if (productFields.description !== undefined)
+    updateData.description = productFields.description;
+  if (productFields.thumbnail !== undefined)
+    updateData.thumbnail = productFields.thumbnail;
   updateData.updated_at = new Date().toISOString();
 
   if (newSlug !== oldSlug) {
@@ -300,4 +312,16 @@ export async function updateProductWithSubProducts(
   }
 
   return { success: true, slug: newSlug };
+}
+
+export async function getProductSlugs(): Promise<string[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("products").select("slug");
+
+  if (error) {
+    console.error("Error fetching product slugs:", error);
+    return [];
+  }
+
+  return (data ?? []).map((p) => p.slug);
 }

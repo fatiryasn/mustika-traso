@@ -26,13 +26,6 @@ export default function PublicProductPagination({
     router.push(`/produk?${params.toString()}`);
   };
 
-  const handleLimitChange = (newLimit: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("limit", newLimit.toString());
-    params.set("page", "1"); // reset to first page
-    router.push(`/produk?${params.toString()}`);
-  };
-
   return (
     <Pagination
       currentPage={currentPage}
@@ -40,8 +33,7 @@ export default function PublicProductPagination({
       onPageChange={handlePageChange}
       totalItems={totalItems}
       limit={limit}
-      onLimitChange={handleLimitChange}
-      limitOptions={[30]} // locked to 30
+      variant="public"
     />
   );
 }

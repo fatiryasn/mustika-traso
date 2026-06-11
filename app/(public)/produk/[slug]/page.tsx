@@ -1,9 +1,49 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { FaArrowLeft, FaWhatsapp } from "react-icons/fa";
 
 import { getProductBySlug } from "@/lib/product/product";
 import { COMPANY_DATA } from "@/data/constants";
 
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+//metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      title: "Produk tidak ditemukan",
+    };
+  }
+
+  const description = product.description ?? `Detail produk ${product.name}`;
+
+  return {
+    title: product.name,
+    description,
+    openGraph: {
+      title: product.name,
+      description,
+      images: product.thumbnail ? [product.thumbnail] : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images: product.thumbnail ? [product.thumbnail] : [],
+    },
+    alternates: {
+      canonical: `${COMPANY_DATA.base_url}/produk/${slug}`,
+    },
+  };
+}
+
+//main component
 export default async function ProductDetailPage({
   params,
 }: {

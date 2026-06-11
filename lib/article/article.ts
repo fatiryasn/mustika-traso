@@ -3,7 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Article, GetArticlesParams } from "@/types/Article";
-import { generateSlug } from "@/lib/utils/generateSlug"
+import { generateSlug } from "@/lib/utils/generateSlug";
+import { cache } from "react";
 
 //GET ARTICLES
 export async function getArticles({
@@ -71,7 +72,10 @@ export async function deleteArticle(id: string) {
           .remove([filePath]);
 
         if (storageError) {
-          console.error("Failed to delete article image from storage:", storageError);
+          console.error(
+            "Failed to delete article image from storage:",
+            storageError,
+          );
         }
       }
     } catch (err) {
@@ -155,7 +159,7 @@ export async function createArticle(formData: {
 }
 
 //GET ARTICLE BY SLUG
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+export const getArticleBySlug = cache(async (slug: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
@@ -168,7 +172,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
     return null;
   }
   return data;
-}
+});
 
 // UPDATE ARTICLE
 export async function updateArticle(params: {
@@ -253,7 +257,10 @@ export async function updateArticle(params: {
           .remove([filePath]);
 
         if (storageError) {
-          console.error("Failed to delete old article thumbnail:", storageError);
+          console.error(
+            "Failed to delete old article thumbnail:",
+            storageError,
+          );
         }
       }
     } catch (err) {
@@ -269,4 +276,15 @@ export async function updateArticle(params: {
   }
 
   return { success: true, slug: newSlug };
+}
+export async function getArticleSlugs(): Promise<string[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("articles").select("slug");
+
+  if (error) {
+    console.error("Error fetching article slugs:", error);
+    return [];
+  }
+
+  return (data ?? []).map((p) => p.slug);
 }

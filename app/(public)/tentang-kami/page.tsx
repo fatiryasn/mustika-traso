@@ -6,6 +6,7 @@ import { coreStrengths } from "@/data/coreStrengths";
 import { visiData, misiData } from "@/data/visiMisi";
 import PageBanner from "@/components/PageBanner";
 
+//metadata
 export const metadata: Metadata = {
   title: `Tentang Kami - ${COMPANY_DATA.name}`,
   description: `Mengenal visi, misi, dan nilai kredibilitas ${COMPANY_DATA.name}`,
@@ -23,7 +24,28 @@ export const metadata: Metadata = {
     `Tentang ${COMPANY_DATA.brand_name}`,
     `Visi Misi ${COMPANY_DATA.brand_name}`,
   ],
+
+  alternates: {
+    canonical: `${COMPANY_DATA.base_url}/tentang-kami`,
+  },
+
+  openGraph: {
+    title: `Tentang Kami - ${COMPANY_DATA.name}`,
+    description: `Mengenal visi, misi, dan nilai kredibilitas ${COMPANY_DATA.name}`,
+    images: ["/og-image.png"],
+    url: `${COMPANY_DATA.base_url}/tentang-kami`,
+    siteName: COMPANY_DATA.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Tentang Kami - ${COMPANY_DATA.name}`,
+    description: `Mengenal visi, misi, dan nilai kredibilitas ${COMPANY_DATA.name}`,
+    images: ["/og-image.png"],
+  },
 };
+
+//main component
 export default function TentangKamiPage() {
   return (
     <div className="bg-background min-h-screen pb-16 pt-4">
@@ -46,18 +68,19 @@ export default function TentangKamiPage() {
               {COMPANY_DATA.name}: Sejarah & Reputasi
             </h3>
             <p className="text-darkslate/90 text-xs sm:text-base leading-relaxed mb-5 font-inter">
-              {COMPANY_DATA.brand_name} merupakan perusahaan penyedia produk beton pra-cetak
-              (precast concrete) premium yang didirikan untuk menjawab tingginya
-              kebutuhan material konstruksi Indonesia yang andal, efisien, dan
-              bersertifikasi. Kami mengoperasikan pabrik modern dengan kapasitas
-              produksi massal untuk mencetak saluran drainase, paving, pembatas
-              aspal jalan, dan gorong-gorong utilitas.
+              {COMPANY_DATA.brand_name} merupakan perusahaan penyedia produk
+              beton pra-cetak (precast concrete) premium yang didirikan untuk
+              menjawab tingginya kebutuhan material konstruksi Indonesia yang
+              andal, efisien, dan bersertifikasi. Kami mengoperasikan pabrik
+              modern dengan kapasitas produksi massal untuk mencetak saluran
+              drainase, paving, pembatas aspal jalan, dan gorong-gorong
+              utilitas.
             </p>
             <p className="text-darkslate/90 text-xs sm:text-base leading-relaxed mb-6 font-inter">
-              Dalam kurun waktu pengabdian kami, {COMPANY_DATA.brand_name} telah dipercaya
-              oleh berbagai kontraktor swasta nasional, BUMN karya, hingga dinas
-              pekerjaan umum pemerintahan kota untuk mensuplai material
-              prasarana drainase jalan raya, kawasan logistik industri
+              Dalam kurun waktu pengabdian kami, {COMPANY_DATA.brand_name} telah
+              dipercaya oleh berbagai kontraktor swasta nasional, BUMN karya,
+              hingga dinas pekerjaan umum pemerintahan kota untuk mensuplai
+              material prasarana drainase jalan raya, kawasan logistik industri
               pergudangan, hingga fasilitas perumahan modern.
             </p>
           </div>
@@ -209,7 +232,7 @@ export default function TentangKamiPage() {
                 src: "/field-pictures/image7.jpeg",
                 alt: "Operasional 7",
                 colSpan: "sm:col-span-1 lg:col-span-2",
-                rowSpan: "sm:row-span-1", 
+                rowSpan: "sm:row-span-1",
               },
             ].map((img, idx) => (
               <div

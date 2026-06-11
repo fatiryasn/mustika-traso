@@ -1,9 +1,51 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { FaArrowLeft, FaWhatsapp } from "react-icons/fa";
 
 import { getProjectBySlug } from "@/lib/project/project";
 import { COMPANY_DATA } from "@/data/constants";
 
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+//metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
+
+  if (!project) {
+    return {
+      title: "Proyek tidak ditemukan",
+    };
+  }
+
+  const description =
+    project.description ??
+    `Proyek ${project.title} oleh ${project.client_name ?? "PT. Mustika Traso"}`;
+
+  return {
+    title: project.title,
+    description,
+    openGraph: {
+      title: project.title,
+      description,
+      images: project.thumbnail ? [project.thumbnail] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description,
+      images: project.thumbnail ? [project.thumbnail] : [],
+    },
+    alternates: {
+      canonical: `${COMPANY_DATA.base_url}/proyek/${slug}`,
+    },
+  };
+}
+
+//main component
 export default async function ProjectDetailPage({
   params,
 }: {

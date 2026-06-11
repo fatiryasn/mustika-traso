@@ -7,14 +7,15 @@ interface ProyekPaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
+  limit: number;
 }
 
-const LIMIT = 30;
 
 export default function PublicProjectPagination({
   currentPage,
   totalPages,
   totalItems,
+  limit,
 }: ProyekPaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,10 +26,6 @@ export default function PublicProjectPagination({
     router.push(`/proyek?${params.toString()}`);
   };
 
-  const handleLimitChange = (newLimit: number) => {
-    // limit is fixed, but we still need the callback for the Pagination component
-    // No-op, as limit is not allowed to change
-  };
 
   return (
     <Pagination
@@ -36,9 +33,8 @@ export default function PublicProjectPagination({
       totalPages={totalPages}
       onPageChange={handlePageChange}
       totalItems={totalItems}
-      limit={LIMIT}
-      onLimitChange={handleLimitChange}
-      limitOptions={[LIMIT]}
+      limit={limit}
+      variant="public"
     />
   );
 }

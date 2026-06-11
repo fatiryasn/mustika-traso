@@ -1,4 +1,3 @@
-// components/ProjectCard.tsx
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
@@ -6,7 +5,7 @@ export interface ProjectCardData {
   id: string;
   title: string;
   slug: string;
-  description: string | null; // not shown on card, used on detail page
+  description: string | null;
   thumbnail: string | null;
   client_name: string | null;
   year: string | null;
@@ -35,7 +34,7 @@ export default function ProjectCard({ project }: { project: ProjectCardData }) {
       </div>
 
       {/* Dark overlay – lightens on hover */}
-      <div className="absolute inset-0 bg-black/50 group-hover:bg-black/0 transition-colors duration-500" />
+      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-colors duration-500" />
 
       {/* Content overlay – positioned at bottom */}
       <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
