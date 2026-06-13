@@ -8,10 +8,10 @@ import {
   HiOutlinePlus,
   HiOutlineSortDescending,
 } from "react-icons/hi";
-import DataTable, { type Column } from "@/components/DataTable";
 import { getProducts } from "@/lib/product/product";
-import { Product } from "@/types/Product";
 import { formatDate } from "@/lib/utils/format";
+import { Product } from "@/types/Product";
+import DataTable, { type Column } from "@/components/DataTable";
 
 interface SortConfig {
   column: string;
@@ -70,30 +70,12 @@ export default function AdminManageProductsPage() {
     {
       key: "name",
       header: "Nama",
+      className: "max-w-[200px] truncate",
       render: (product) => (
         <span className="font-semibold font-inter text-darkblue">
           {product.name}
         </span>
       ),
-    },
-    {
-      key: "slug",
-      header: "Slug",
-      hidden: "md",
-      render: (product) => (
-        <span className="text-gray-500">{product.slug}</span>
-      ),
-    },
-    {
-      key: "description",
-      header: "Deskripsi",
-      hidden: "lg",
-      render: (product) => (
-        <span className="max-w-[200px] truncate block">
-          {product.description || "-"}
-        </span>
-      ),
-      className: "max-w-[200px] truncate",
     },
     {
       key: "thumbnail",
@@ -104,7 +86,7 @@ export default function AdminManageProductsPage() {
             <img
               src={product.thumbnail}
               alt={product.name}
-              className="w-20 h-20 rounded-sm object-cover border border-gray-200"
+              className="w-24 h-36 rounded-sm object-cover border border-gray-200"
             />
           ) : (
             <span>-</span>
@@ -112,6 +94,28 @@ export default function AdminManageProductsPage() {
         </div>
       ),
       className: "text-center",
+    },
+    {
+      key: "slug",
+      header: "Slug",
+      hidden: "lg",
+      className: "max-w-[200px] truncate",
+      render: (product) => (
+        <span className="text-gray-500 max-w-[200px] truncate block">
+          {product.slug}
+        </span>
+      ),
+    },
+    {
+      key: "description",
+      header: "Deskripsi",
+      hidden: "md",
+      className: "max-w-[300px] truncate",
+      render: (product) => (
+        <span className="max-w-[300px] truncate block">
+          {product.description || "-"}
+        </span>
+      ),
     },
     {
       key: "sub_products",
@@ -122,7 +126,6 @@ export default function AdminManageProductsPage() {
     {
       key: "created_at",
       header: "Tanggal Dibuat",
-      hidden: "sm",
       render: (product) => (
         <span className="">{formatDate(product.created_at)}</span>
       ),
@@ -147,18 +150,18 @@ export default function AdminManageProductsPage() {
   return (
     <div className="space-y-6">
       {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
+      <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-4">
+        <div className="text-center sm:text-start">
           <h1 className="text-2xl md:text-3xl font-grotesk font-bold text-gray-800">
             Manajemen Produk
           </h1>
-          <p className="text-darkslate/80 font-inter text-sm mt-1">
+          <p className="text-darkslate/80 font-inter text-xs md:text-sm mt-1">
             Kelola katalog produk beton pracetak
           </p>
         </div>
         <Link
           href="/admin/manage-produk/tambah"
-          className="inline-flex items-center gap-2 bg-navy hover:bg-steelblue text-white px-4 py-2.5 rounded-xl text-sm font-jetbrains font-medium transition-colors self-start"
+          className="inline-flex items-center gap-2 bg-navy hover:bg-steelblue text-white px-4 py-2.5 rounded-xl text-xs md:text-sm font-jetbrains font-medium transition-colors sm:self-start"
         >
           <HiOutlinePlus className="w-5 h-5" />
           Tambah Produk
@@ -166,7 +169,7 @@ export default function AdminManageProductsPage() {
       </div>
 
       {/* SEARCH & SORT */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex gap-4">
         <div className="relative flex-1">
           <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-darkslate/90 w-5 h-5" />
           <input
@@ -174,10 +177,10 @@ export default function AdminManageProductsPage() {
             placeholder="Cari produk (nama/slug)..."
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-sm font-jetbrains transition-all bg-white"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-xs md:text-sm font-jetbrains transition-all bg-white"
           />
         </div>
-        <div className="relative min-w-[180px]">
+        <div className="relative sm:min-w-[180px]">
           <HiOutlineSortDescending className="absolute left-3 top-1/2 -translate-y-1/2 text-darkslate/90 w-5 h-5" />
           <select
             value={currentSortValue}
@@ -185,7 +188,7 @@ export default function AdminManageProductsPage() {
               const opt = sortOptions.find((o) => o.value === e.target.value);
               if (opt) handleSortChange(opt.column, opt.ascending);
             }}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-sm font-jetbrains bg-white appearance-none cursor-pointer"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-xs md:text-sm font-jetbrains bg-white appearance-none cursor-pointer"
           >
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
@@ -195,7 +198,7 @@ export default function AdminManageProductsPage() {
         </div>
       </div>
 
-      {/* TABLE */}
+      {/* DATATABLE */}
       <DataTable
         columns={columns}
         data={products}

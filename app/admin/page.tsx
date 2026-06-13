@@ -7,32 +7,10 @@ import {
   HiOutlineBriefcase,
   HiOutlineCube,
   HiOutlineArrowRight,
+  HiOutlineDesktopComputer,
 } from "react-icons/hi";
-import { getAdminStats } from "@/lib/overview/overview";
 
-const quickActions = [
-  {
-    title: "Tambah Produk Baru",
-    description: "Input material beton pracetak terbaru",
-    href: "/admin/manage-produk/tambah",
-    icon: <HiOutlineCube className="w-5 h-5" />,
-    bg: "bg-emerald-500",
-  },
-  {
-    title: "Tulis Artikel",
-    description: "Publikasikan informasi atau berita",
-    href: "/admin/manage-artikel/tambah",
-    icon: <HiOutlineDocumentText className="w-5 h-5" />,
-    bg: "bg-violet-500",
-  },
-  {
-    title: "Kelola Proyek",
-    description: "Perbarui portofolio proyek",
-    href: "/admin/manage-proyek",
-    icon: <HiOutlineBriefcase className="w-5 h-5" />,
-    bg: "bg-blue-500",
-  },
-];
+import { getAdminStats } from "@/lib/overview/overview";
 
 export default function AdminOverviewPage() {
   const [stats, setStats] = useState({
@@ -82,15 +60,51 @@ export default function AdminOverviewPage() {
       textColor: "text-violet-600",
     },
   ];
+  const quickActions = [
+    {
+      title: "Tambah Produk Baru",
+      description: "Input material beton pracetak terbaru",
+      href: "/admin/manage-produk/tambah",
+      icon: <HiOutlineCube className="w-5 h-5" />,
+      bg: "bg-emerald-500",
+    },
+    {
+      title: "Tulis Artikel",
+      description: "Publikasikan informasi atau berita",
+      href: "/admin/manage-artikel/tambah",
+      icon: <HiOutlineDocumentText className="w-5 h-5" />,
+      bg: "bg-violet-500",
+    },
+    {
+      title: "Tambah Proyek",
+      description: "Perbarui portofolio proyek",
+      href: "/admin/manage-proyek/tambah",
+      icon: <HiOutlineBriefcase className="w-5 h-5" />,
+      bg: "bg-blue-500",
+    },
+  ];
 
   return (
     <div className="space-y-8">
+      {/* MOBILE RECOMMENDATION */}
+      <div className="sm:hidden bg-amber-50 border border-amber-200 rounded-lg p-4 items-start flex gap-3">
+        <HiOutlineDesktopComputer className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-amber-800 text-sm font-medium font-grotesk">
+            Gunakan layar yang lebih besar
+          </p>
+          <p className="text-amber-700 text-[8px] sm:text-xs mt-1 font-inter">
+            Direkomendasikan untuk menggunakan tablet / desktop untuk pengalaman
+            optimal
+          </p>
+        </div>
+      </div>
       {/* WELCOME */}
-      <div>
-        <h1 className="text-2xl md:text-3xl font-grotesk font-bold text-gray-800">
+      <div className="hidden md:block">
+        <h1 className="text-2xl lg:text-3xl font-grotesk font-bold text-gray-800">
           Selamat Datang, <span className="text-navy">Admin</span>
         </h1>
-        <p className="text-darkslate/80 font-inter text-sm mt-1">
+        <p className="text-darkslate/80 font-inter text-xs lg:text-sm mt-1">
           Pantau dan kelola konten website PT. Mustika Traso
         </p>
       </div>
@@ -130,7 +144,7 @@ export default function AdminOverviewPage() {
             <Link
               key={action.title}
               href={action.href}
-              className="bg-white rounded-xl p-5 border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all flex items-center gap-4 group"
+              className="bg-white rounded-xl p-5 border border-gray-100 hover:border-blue-200 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group"
             >
               <div className={`${action.bg} p-2.5 rounded-lg text-white`}>
                 {action.icon}

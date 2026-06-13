@@ -10,6 +10,7 @@ import {
   HiOutlineArrowLeft,
   HiOutlineClipboardList,
 } from "react-icons/hi";
+
 import { createProduct, uploadProductImage } from "@/lib/product/product";
 import SubProductBulkImport from "@/components/SubProductBulkImport";
 
@@ -24,7 +25,7 @@ interface SubProduct {
 export default function TambahProdukPage() {
   const router = useRouter();
 
-  // STATES
+  //STATES
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
@@ -32,11 +33,9 @@ export default function TambahProdukPage() {
   const [subProducts, setSubProducts] = useState<SubProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-
-  // Bulk import states
   const [bulkModalOpen, setBulkModalOpen] = useState(false);
 
-  // THUMBNAIL CHANGE
+  //THUMBNAIL CHANGE
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -45,7 +44,7 @@ export default function TambahProdukPage() {
     }
   };
 
-  // SUB PRODUCT HANDLERS
+  //SUB PRODUCT HANDLERS
   const addSubProduct = () => {
     setSubProducts((prev) => [
       ...prev,
@@ -58,11 +57,9 @@ export default function TambahProdukPage() {
       },
     ]);
   };
-
   const removeSubProduct = (id: string) => {
     setSubProducts((prev) => prev.filter((sp) => sp.id !== id));
   };
-
   const updateSubProduct = (
     id: string,
     field: keyof SubProduct,
@@ -73,7 +70,7 @@ export default function TambahProdukPage() {
     );
   };
 
-  // SUBMIT
+  //SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
@@ -133,10 +130,10 @@ export default function TambahProdukPage() {
           <HiOutlineArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-grotesk font-bold text-gray-800">
+          <h1 className="text-xl md:text-2xl font-grotesk font-bold text-gray-800">
             Tambah Produk Baru
           </h1>
-          <p className="text-darkslate/80 font-inter text-sm mt-1">
+          <p className="text-darkslate/80 font-inter text-xs md:text-sm mt-1">
             Isi detail produk beton pracetak
           </p>
         </div>
@@ -199,7 +196,7 @@ export default function TambahProdukPage() {
                 <img
                   src={thumbnailPreview}
                   alt="Preview"
-                  className="h-20 w-20 rounded-sm object-cover border border-gray-200"
+                  className="h-40 w-28 rounded-sm object-cover border border-gray-200"
                 />
               )}
             </div>
@@ -213,16 +210,15 @@ export default function TambahProdukPage() {
 
         {/* Sub Products */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <h2 className="font-semibold text-gray-800 font-grotesk">
               Sub Produk (Varian)
             </h2>
             <div className="flex items-center gap-4">
-              {/* Bulk Import Button */}
               <button
                 type="button"
                 onClick={() => setBulkModalOpen(true)}
-                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
+                className="inline-flex items-center gap-1 text-xs md:text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
               >
                 <HiOutlineClipboardList className="w-4 h-4" />
                 Paste dari Spreadsheet
@@ -230,7 +226,7 @@ export default function TambahProdukPage() {
               <button
                 type="button"
                 onClick={addSubProduct}
-                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
+                className="inline-flex items-center gap-1 text-xs md:text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
               >
                 <HiOutlinePlus className="w-4 h-4" />
                 Tambah Manual
@@ -317,7 +313,7 @@ export default function TambahProdukPage() {
               ))}
             </div>
           ) : (
-            <p className="text-sm text-gray-400 font-manrope py-2">
+            <p className="text-xs md:text-sm text-gray-400 font-manrope py-2">
               Belum ada varian. Gunakan paste spreadsheet atau klik "Tambah
               Manual" untuk menambahkan.
             </p>

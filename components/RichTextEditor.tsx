@@ -5,7 +5,14 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
-import { HiOutlineCode, HiOutlineLink } from "react-icons/hi";
+import {
+  HiOutlineCode,
+  HiOutlineLink,
+  HiOutlineViewList,
+  HiOutlineClipboardList,
+  HiOutlineChatAlt2,
+} from "react-icons/hi";
+import { FaAlignCenter, FaAlignJustify, FaAlignLeft, FaAlignRight } from "react-icons/fa";
 
 interface RichTextEditorProps {
   content: string;
@@ -16,7 +23,7 @@ interface RichTextEditorProps {
 export default function RichTextEditor({
   content,
   onChange,
-  className = "", 
+  className = "",
 }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
@@ -141,7 +148,7 @@ export default function RichTextEditor({
           }`}
           title="Daftar Poin"
         >
-          <HiOutlineCode className="w-4 h-4" />
+          <HiOutlineViewList className="w-4 h-4" />
         </button>
         {/* Ordered List */}
         <button
@@ -152,7 +159,7 @@ export default function RichTextEditor({
           }`}
           title="Daftar Bernomor"
         >
-          <span className="text-xs font-bold">1.</span>
+          <HiOutlineClipboardList className="w-4 h-4" />
         </button>
         {/* Blockquote */}
         <button
@@ -163,7 +170,7 @@ export default function RichTextEditor({
           }`}
           title="Kutipan"
         >
-          <HiOutlineCode className="w-4 h-4" />
+          <HiOutlineChatAlt2 className="w-4 h-4" />
         </button>
 
         <span className="w-px h-5 bg-gray-300 mx-1" />
@@ -184,9 +191,33 @@ export default function RichTextEditor({
         <button
           type="button"
           onClick={() => {
-            const url = window.prompt("Masukkan URL");
-            if (url) {
-              editor.chain().focus().setLink({ href: url }).run();
+            const previousUrl = editor.getAttributes("link").href;
+            const url = window.prompt("Masukkan URL", previousUrl);
+
+            // cancelled
+            if (url === null) return;
+
+            // empty string removes the link
+            if (url === "") {
+              editor.chain().focus().extendMarkRange("link").unsetLink().run();
+              return;
+            }
+
+            // If there's a selection, apply link to that text
+            if (!editor.state.selection.empty) {
+              editor
+                .chain()
+                .focus()
+                .extendMarkRange("link")
+                .setLink({ href: url })
+                .run();
+            } else {
+              // No selection – insert the URL as text and make it a link
+              editor
+                .chain()
+                .focus()
+                .insertContent(`<a href="${url}">${url}</a>`)
+                .run();
             }
           }}
           className={`p-1.5 rounded hover:bg-gray-200 ${
@@ -208,7 +239,7 @@ export default function RichTextEditor({
           }`}
           title="Rata Kiri"
         >
-          <span className="text-xs">⬅</span>
+          <FaAlignLeft className="w-4 h-4" />
         </button>
         <button
           type="button"
@@ -218,7 +249,7 @@ export default function RichTextEditor({
           }`}
           title="Rata Tengah"
         >
-          <span className="text-xs">↔</span>
+          <FaAlignCenter className="w-4 h-4" />
         </button>
         <button
           type="button"
@@ -228,7 +259,7 @@ export default function RichTextEditor({
           }`}
           title="Rata Kanan"
         >
-          <span className="text-xs">➡</span>
+          <FaAlignRight className="w-4 h-4" />
         </button>
         <button
           type="button"
@@ -238,7 +269,7 @@ export default function RichTextEditor({
           }`}
           title="Rata Penuh"
         >
-          <span className="text-xs">◼</span>
+          <FaAlignJustify className="w-4 h-4" />
         </button>
       </div>
       {/* Editor Content */}

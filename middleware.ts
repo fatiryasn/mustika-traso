@@ -34,7 +34,14 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  //logged in
+  if (user && request.nextUrl.pathname === "/admin/login") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin";
+    return NextResponse.redirect(url);
+  }
 
+  //not logged in
   if (
     !user &&
     request.nextUrl.pathname.startsWith("/admin") &&

@@ -12,55 +12,53 @@ import {
 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 
-interface AdminSidebarProps {
-  isCollapsed: boolean;
+interface SidebarContentProps {
+  collapsed: boolean;
   onToggle: () => void;
+  onLinkClick?: () => void; // optional: close mobile sidebar on nav click
 }
 
-const AdminSidebar = ({ isCollapsed, onToggle }: AdminSidebarProps) => {
+const navItems = [
+  {
+    name: "Overview",
+    href: "/admin",
+    icon: <MdOutlineDashboard className="w-5 h-5" />,
+  },
+  {
+    name: "Artikel",
+    href: "/admin/manage-artikel",
+    icon: <HiOutlineDocumentText className="w-5 h-5" />,
+  },
+  {
+    name: "Proyek",
+    href: "/admin/manage-proyek",
+    icon: <HiOutlineBriefcase className="w-5 h-5" />,
+  },
+  {
+    name: "Produk",
+    href: "/admin/manage-produk",
+    icon: <HiOutlineCube className="w-5 h-5" />,
+  },
+];
+
+export default function SidebarContent({
+  collapsed,
+  onToggle,
+  onLinkClick,
+}: SidebarContentProps) {
   const pathname = usePathname();
 
-  const navItems = [
-    {
-      name: "Overview",
-      href: "/admin",
-      icon: <MdOutlineDashboard className="w-5 h-5" />,
-    },
-    {
-      name: "Artikel",
-      href: "/admin/manage-artikel",
-      icon: <HiOutlineDocumentText className="w-5 h-5" />,
-    },
-    {
-      name: "Proyek",
-      href: "/admin/manage-proyek",
-      icon: <HiOutlineBriefcase className="w-5 h-5" />,
-    },
-    {
-      name: "Produk",
-      href: "/admin/manage-produk",
-      icon: <HiOutlineCube className="w-5 h-5" />,
-    },
-  ];
-
   const isActive = (href: string) => {
-    if (href === "/admin") {
-      return pathname === "/admin";
-    }
+    if (href === "/admin") return pathname === "/admin";
     return pathname.startsWith(href);
   };
 
   return (
-    <motion.aside
-      initial={{ width: isCollapsed ? 80 : 250 }}
-      animate={{ width: isCollapsed ? "80px" : "250px" }}
-      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className="fixed left-0 top-0 h-screen bg-[#0a1929] border-r border-navy/50 shadow-2xl z-50 flex flex-col overflow-hidden"
-    >
-      {/* LOGO */}
+    <>
+      {/* LOGO + TOGGLE */}
       <div className="flex items-center justify-between p-6 border-b border-navy/50 min-h-[104px]">
         <AnimatePresence mode="wait">
-          {!isCollapsed && (
+          {!collapsed && (
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -80,10 +78,10 @@ const AdminSidebar = ({ isCollapsed, onToggle }: AdminSidebarProps) => {
         <button
           onClick={onToggle}
           className={`p-2 rounded-lg hover:bg-navy-700/50 text-gray-400 hover:text-white transition-colors duration-200 flex-shrink-0 ${
-            isCollapsed ? "mx-auto" : ""
+            collapsed ? "mx-auto" : ""
           }`}
         >
-          {isCollapsed ? (
+          {collapsed ? (
             <HiOutlineChevronRight className="w-5 h-5" />
           ) : (
             <HiOutlineChevronLeft className="w-5 h-5" />
@@ -91,7 +89,7 @@ const AdminSidebar = ({ isCollapsed, onToggle }: AdminSidebarProps) => {
         </button>
       </div>
 
-      {/* NAV */}
+      {/* NAVIGATION */}
       <nav className="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const active = isActive(item.href);
@@ -99,6 +97,7 @@ const AdminSidebar = ({ isCollapsed, onToggle }: AdminSidebarProps) => {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onLinkClick} // closes mobile overlay if provided
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative ${
                 active
                   ? "bg-gradient-to-r from-blue-600/20 to-cyan-600/20 text-white shadow-lg shadow-blue-500/10 border border-blue-500/20"
@@ -116,7 +115,7 @@ const AdminSidebar = ({ isCollapsed, onToggle }: AdminSidebarProps) => {
               </span>
 
               <AnimatePresence mode="wait">
-                {!isCollapsed && (
+                {!collapsed && (
                   <motion.span
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -130,18 +129,12 @@ const AdminSidebar = ({ isCollapsed, onToggle }: AdminSidebarProps) => {
               </AnimatePresence>
 
               {active && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-r-full"
-                  transition={{ duration: 0.3 }}
-                />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-r-full" />
               )}
             </Link>
           );
         })}
       </nav>
-    </motion.aside>
+    </>
   );
-};
-
-export default AdminSidebar;
+}

@@ -1,10 +1,10 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsappButton from "@/components/WhatsappButton";
-import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
 
 export default function RootClient({
   children,

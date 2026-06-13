@@ -1,10 +1,10 @@
-// app/admin/manage-artikel/tambah/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { HiOutlineUpload, HiOutlineArrowLeft } from "react-icons/hi";
+
 import { createArticle, uploadArticleImage } from "@/lib/article/article";
 import RichTextEditor from "@/components/RichTextEditor";
 
@@ -21,7 +21,7 @@ export default function TambahArtikelPage() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // Thumbnail change
+  //THUMBNAIL CHANGE
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -30,7 +30,7 @@ export default function TambahArtikelPage() {
     }
   };
 
-  // Submit
+  //HANDLE SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -71,7 +71,7 @@ export default function TambahArtikelPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* HEADER */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
@@ -80,16 +80,16 @@ export default function TambahArtikelPage() {
           <HiOutlineArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-grotesk font-bold text-gray-800">
+          <h1 className="text-xl md:text-2xl font-grotesk font-bold text-gray-800">
             Tambah Artikel Baru
           </h1>
-          <p className="text-darkslate/80 font-inter text-sm mt-1">
+          <p className="text-darkslate/80 font-inter text-xs md:text-sm mt-1">
             Tulis artikel atau berita terbaru
           </p>
         </div>
       </div>
 
-      {/* Form */}
+      {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Informasi Artikel */}
         <div className="bg-white rounded p-6 shadow-sm border border-gray-300 space-y-5">
@@ -126,7 +126,7 @@ export default function TambahArtikelPage() {
             />
           </div>
 
-          {/* Content (Rich Text) */}
+          {/* Content */}
           <div>
             <label className="block text-sm font-medium font-grotesk text-navy mb-1">
               Konten Artikel
@@ -153,7 +153,7 @@ export default function TambahArtikelPage() {
             <label className="block text-sm font-medium font-grotesk text-navy mb-1">
               Thumbnail
             </label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-dashed border-gray-300 rounded-xl hover:border-navy text-sm font-inter text-gray-600 transition-colors">
                 <HiOutlineUpload className="w-5 h-5" />
                 {thumbnail ? "Ganti Gambar" : "Upload Gambar"}
@@ -168,7 +168,7 @@ export default function TambahArtikelPage() {
                 <img
                   src={thumbnailPreview}
                   alt="Preview"
-                  className="h-20 w-20 rounded-sm object-cover border border-gray-200"
+                  className="h-28 w-40 rounded-sm object-cover border border-gray-200"
                 />
               )}
             </div>

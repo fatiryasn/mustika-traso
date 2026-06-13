@@ -11,6 +11,7 @@ import {
   HiOutlineArrowLeft,
   HiOutlineSave,
 } from "react-icons/hi";
+
 import {
   getProjectBySlug,
   updateProject,
@@ -27,7 +28,7 @@ export default function ProjectDetailPage({
   const router = useRouter();
   const { slug } = use(params);
 
-  // States
+  //STATES
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -39,7 +40,7 @@ export default function ProjectDetailPage({
     thumbnail: string;
   } | null>(null);
 
-  // Editable fields
+  //EDITABLE FIELDS
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [clientName, setClientName] = useState("");
@@ -50,7 +51,7 @@ export default function ProjectDetailPage({
   const [projectId, setProjectId] = useState("");
   const [createdAt, setCreatedAt] = useState("");
 
-  // Load project by slug
+  //LOAD PROJECT
   useEffect(() => {
     const load = async () => {
       const project = await getProjectBySlug(slug);
@@ -79,7 +80,7 @@ export default function ProjectDetailPage({
     load();
   }, [slug, router]);
 
-  // Toggle mode
+  //EDIT/VIEW TOGGLE
   const toggleMode = () => {
     if (mode === "view") {
       setMode("edit");
@@ -97,7 +98,7 @@ export default function ProjectDetailPage({
     }
   };
 
-  // Thumbnail change
+  //THUMBNAIL CHANGE
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -106,7 +107,7 @@ export default function ProjectDetailPage({
     }
   };
 
-  // Detect changes
+  //DETECT CHANGE
   const hasChanges = useCallback(() => {
     if (!original) return false;
     return (
@@ -127,7 +128,7 @@ export default function ProjectDetailPage({
     thumbnailUrl,
   ]);
 
-  // Save
+  //HANDLE SAVE
   const handleSave = async () => {
     if (!hasChanges()) return;
     setSaving(true);
@@ -150,7 +151,6 @@ export default function ProjectDetailPage({
       });
 
       toast.success("Proyek berhasil diperbarui");
-      // Refresh data
       const updated = await getProjectBySlug(slug);
       if (updated) {
         setThumbnailUrl(updated.thumbnail || "");
@@ -176,7 +176,7 @@ export default function ProjectDetailPage({
     }
   };
 
-  // Delete
+  //HANDLE DELETE
   const handleDelete = async () => {
     if (confirm("Yakin ingin menghapus proyek ini secara permanen?")) {
       try {
@@ -199,7 +199,7 @@ export default function ProjectDetailPage({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
           <button
@@ -209,10 +209,10 @@ export default function ProjectDetailPage({
             <HiOutlineArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-grotesk font-bold text-darkslate/90">
+            <h1 className="text-xl md:text-2xl font-grotesk font-bold text-darkslate/90">
               {mode === "view" ? "Detail Proyek" : "Edit Proyek"}
             </h1>
-            <p className="text-sm text-darkslate/80 font-inter">
+            <p className="text-xs md:text-sm text-darkslate/80 font-inter">
               {mode === "view"
                 ? "Lihat informasi lengkap proyek"
                 : "Ubah data proyek"}
@@ -222,7 +222,7 @@ export default function ProjectDetailPage({
         <div className="flex gap-2 self-start">
           <button
             onClick={toggleMode}
-            className={`px-4 py-2 rounded-xl text-sm font-jetbrains font-medium flex items-center gap-2 transition-colors ${
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-jetbrains font-medium flex items-center gap-2 transition-colors ${
               mode === "view"
                 ? "bg-navy text-white hover:bg-steelblue"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -242,7 +242,7 @@ export default function ProjectDetailPage({
             <button
               onClick={handleSave}
               disabled={!hasChanges() || saving}
-              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-jetbrains font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs md:text-sm font-jetbrains font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
             >
               <HiOutlineSave className="w-4 h-4" />
               {saving ? "Menyimpan..." : "Simpan"}
@@ -251,7 +251,7 @@ export default function ProjectDetailPage({
         </div>
       </div>
 
-      {/* Detail Card */}
+      {/* DETAIL CARD */}
       <div className="bg-white rounded shadow-sm border border-gray-300 p-6 space-y-6">
         {/* Title */}
         <div>
@@ -270,7 +270,7 @@ export default function ProjectDetailPage({
           )}
         </div>
 
-        {/* Slug (read-only) */}
+        {/* Slug */}
         <div>
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Slug
@@ -341,15 +341,15 @@ export default function ProjectDetailPage({
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Thumbnail
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             {thumbnailPreview ? (
               <img
                 src={thumbnailPreview}
                 alt="Thumbnail"
-                className="h-20 w-20 rounded-xl object-cover border border-gray-200"
+                className="h-28 w-40 rounded object-cover border border-gray-200"
               />
             ) : (
-              <div className="h-20 w-20 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-gray-400">
+              <div className="h-28 w-40 rounded border border-dashed border-gray-300 flex items-center justify-center text-gray-400">
                 -
               </div>
             )}
@@ -379,7 +379,7 @@ export default function ProjectDetailPage({
         </div>
       </div>
 
-      {/* Delete Section */}
+      {/* DELETE SECTION */}
       <div className="bg-white rounded-2xl shadow-sm border border-red-100 p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
@@ -392,7 +392,7 @@ export default function ProjectDetailPage({
           </div>
           <button
             onClick={handleDelete}
-            className="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-sm font-jetbrains font-medium transition-colors flex items-center gap-2"
+            className="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-xs sm:text-sm font-jetbrains font-medium transition-colors flex items-center gap-2"
           >
             <HiOutlineTrash className="w-4 h-4" />
             Hapus Proyek

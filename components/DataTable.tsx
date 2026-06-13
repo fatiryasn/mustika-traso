@@ -17,7 +17,6 @@ interface DataTableProps<T> {
   loading?: boolean;
   emptyMessage?: string;
   onRowClick?: (item: T) => void;
-  // Pagination props
   pagination?: {
     currentPage: number;
     totalPages: number;
@@ -47,27 +46,30 @@ export default function DataTable<T extends { id?: string | number }>({
   pagination,
 }: DataTableProps<T>) {
   return (
-    <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+    <div className="w-full max-w-full min-w-0 rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+      <div className="w-full max-w-full min-w-0 overflow-x-auto overflow-y-hidden">
+        <table className="w-full min-w-full table-auto border-collapse text-sm">
           <thead>
-            <tr className="bg-navy/80 text-gray-50 font-inter text-sm uppercase tracking-wider">
+            <tr className="bg-navy/80 text-gray-50 font-inter text-xs md:text-sm uppercase tracking-wider">
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`text-left font-grotesk py-3 px-4 ${getHiddenClass(col.hidden)}`}
+                  className={`text-left font-grotesk py-3 px-4 whitespace-nowrap ${getHiddenClass(
+                    col.hidden,
+                  )}`}
                 >
                   {col.header}
                 </th>
               ))}
             </tr>
           </thead>
+
           <tbody className="divide-y divide-gray-200">
             {loading ? (
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="py-12 text-center text-darkslate/80 font-inter"
+                  className="py-12 text-center text-darkslate/80 font-inter whitespace-nowrap"
                 >
                   Memuat data...
                 </td>
@@ -76,7 +78,7 @@ export default function DataTable<T extends { id?: string | number }>({
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="py-12 text-center text-darkslate/80 font-inter"
+                  className="py-12 text-center text-darkslate/80 font-inter whitespace-nowrap"
                 >
                   {emptyMessage}
                 </td>
@@ -86,12 +88,16 @@ export default function DataTable<T extends { id?: string | number }>({
                 <tr
                   key={item.id ?? index}
                   onClick={() => onRowClick?.(item)}
-                  className={`hover:bg-gray-50 ${onRowClick ? "cursor-pointer" : ""} transition-colors`}
+                  className={`transition-colors ${
+                    onRowClick ? "cursor-pointer hover:bg-gray-50" : ""
+                  }`}
                 >
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className={`py-3 px-4 text-darkslate font-inter ${getHiddenClass(col.hidden)} ${col.className || ""}`}
+                      className={`py-3 px-3 md:px-5 text-darkslate font-inter ${getHiddenClass(
+                        col.hidden,
+                      )} ${col.className || ""}`}
                     >
                       {col.render ? col.render(item) : (item as any)[col.key]}
                     </td>
@@ -103,7 +109,6 @@ export default function DataTable<T extends { id?: string | number }>({
         </table>
       </div>
 
-      {/* Pagination */}
       {pagination && (
         <Pagination
           currentPage={pagination.currentPage}

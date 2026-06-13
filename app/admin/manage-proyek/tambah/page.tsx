@@ -1,16 +1,16 @@
-// app/admin/manage-proyek/tambah/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { HiOutlineUpload, HiOutlineArrowLeft } from "react-icons/hi";
+
 import { createProject, uploadProjectImage } from "@/lib/project/project";
 
 export default function TambahProyekPage() {
   const router = useRouter();
 
-  // Form state
+  //STATES
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [clientName, setClientName] = useState("");
@@ -21,7 +21,7 @@ export default function TambahProyekPage() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // Thumbnail change handler
+  //THUMBNAIL CHANGE
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -30,7 +30,7 @@ export default function TambahProyekPage() {
     }
   };
 
-  // Submit handler
+  //HANDLE SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -43,7 +43,6 @@ export default function TambahProyekPage() {
     try {
       let thumbnailUrl = "";
 
-      // Upload image if provided
       if (thumbnail) {
         setUploading(true);
         const imageFormData = new FormData();
@@ -52,7 +51,6 @@ export default function TambahProyekPage() {
         setUploading(false);
       }
 
-      // Create project via server action
       await createProject({
         title,
         description: description || undefined,
@@ -73,7 +71,7 @@ export default function TambahProyekPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* HEADER */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
@@ -82,16 +80,16 @@ export default function TambahProyekPage() {
           <HiOutlineArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-grotesk font-bold text-gray-800">
+          <h1 className="text-xl md:text-2xl font-grotesk font-bold text-gray-800">
             Tambah Proyek Baru
           </h1>
-          <p className="text-darkslate/80 font-inter text-sm mt-1">
+          <p className="text-darkslate/80 font-inter text-xs md:text-sm mt-1">
             Isi detail proyek yang akan ditampilkan di portofolio
           </p>
         </div>
       </div>
 
-      {/* Form */}
+      {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Informasi Proyek */}
         <div className="bg-white rounded p-6 shadow-sm border border-gray-300 space-y-5">
@@ -160,7 +158,7 @@ export default function TambahProyekPage() {
             <label className="block text-sm font-medium font-grotesk text-navy mb-1">
               Thumbnail
             </label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-dashed border-gray-300 rounded-xl hover:border-navy text-sm font-inter text-gray-600 transition-colors">
                 <HiOutlineUpload className="w-5 h-5" />
                 {thumbnail ? "Ganti Gambar" : "Upload Gambar"}
@@ -175,7 +173,7 @@ export default function TambahProyekPage() {
                 <img
                   src={thumbnailPreview}
                   alt="Preview"
-                  className="h-20 w-20 rounded-sm object-cover border border-gray-200"
+                  className="h-28 w-40 rounded-sm object-cover border border-gray-200"
                 />
               )}
             </div>

@@ -1,4 +1,3 @@
-// app/admin/manage-artikel/[slug]/page.tsx
 "use client";
 
 import { useState, useEffect, useCallback, use } from "react";
@@ -11,6 +10,7 @@ import {
   HiOutlineUpload,
   HiOutlineArrowLeft,
   HiOutlineSave,
+
 } from "react-icons/hi";
 import {
   getArticleBySlug,
@@ -29,7 +29,7 @@ export default function ArticleDetailPage({
   const router = useRouter();
   const { slug } = use(params);
 
-  // States
+  //STATES
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,7 +51,7 @@ export default function ArticleDetailPage({
   const [articleId, setArticleId] = useState("");
   const [createdAt, setCreatedAt] = useState("");
 
-  // Load article
+  //LOAD ARTICLE
   useEffect(() => {
     const load = async () => {
       const article = await getArticleBySlug(slug);
@@ -80,7 +80,7 @@ export default function ArticleDetailPage({
     load();
   }, [slug, router]);
 
-  // Toggle mode
+  //EDIT/VIEW TOGGLE
   const toggleMode = () => {
     if (mode === "view") {
       setMode("edit");
@@ -98,7 +98,7 @@ export default function ArticleDetailPage({
     }
   };
 
-  // Thumbnail change
+  //THUMBNAIL CHANGE
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -107,7 +107,7 @@ export default function ArticleDetailPage({
     }
   };
 
-  // Detect changes
+  //DETECT CHANGE
   const hasChanges = useCallback(() => {
     if (!original) return false;
     return (
@@ -120,7 +120,7 @@ export default function ArticleDetailPage({
     );
   }, [original, title, excerpt, content, author, thumbnailFile, thumbnailUrl]);
 
-  // Save
+  //HANDLE SAVE
   const handleSave = async () => {
     if (!hasChanges()) return;
     setSaving(true);
@@ -143,7 +143,6 @@ export default function ArticleDetailPage({
       });
 
       toast.success("Artikel berhasil diperbarui");
-      // Refresh data
       const updated = await getArticleBySlug(slug);
       if (updated) {
         setThumbnailUrl(updated.thumbnail || "");
@@ -169,7 +168,7 @@ export default function ArticleDetailPage({
     }
   };
 
-  // Delete
+  //DELETE
   const handleDelete = async () => {
     if (confirm("Yakin ingin menghapus artikel ini secara permanen?")) {
       try {
@@ -202,10 +201,10 @@ export default function ArticleDetailPage({
             <HiOutlineArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-grotesk font-bold text-darkslate/90">
+            <h1 className="text-xl md:text-2xl font-grotesk font-bold text-darkslate/90">
               {mode === "view" ? "Detail Artikel" : "Edit Artikel"}
             </h1>
-            <p className="text-sm text-darkslate/80 font-inter">
+            <p className="text-xs md:text-sm text-darkslate/80 font-inter">
               {mode === "view"
                 ? "Lihat informasi lengkap artikel"
                 : "Ubah data artikel"}
@@ -215,7 +214,7 @@ export default function ArticleDetailPage({
         <div className="flex gap-2 self-start">
           <button
             onClick={toggleMode}
-            className={`px-4 py-2 rounded-xl text-sm font-jetbrains font-medium flex items-center gap-2 transition-colors ${
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-jetbrains font-medium flex items-center gap-2 transition-colors ${
               mode === "view"
                 ? "bg-navy text-white hover:bg-steelblue"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -235,7 +234,7 @@ export default function ArticleDetailPage({
             <button
               onClick={handleSave}
               disabled={!hasChanges() || saving}
-              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-jetbrains font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs md:text-sm font-jetbrains font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
             >
               <HiOutlineSave className="w-4 h-4" />
               {saving ? "Menyimpan..." : "Simpan"}
@@ -263,7 +262,7 @@ export default function ArticleDetailPage({
           )}
         </div>
 
-        {/* Slug (read-only) */}
+        {/* Slug */}
         <div>
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Slug
@@ -284,7 +283,7 @@ export default function ArticleDetailPage({
             </p>
           ) : (
             <textarea
-              rows={3}
+              rows={4}
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-sm resize-none"
@@ -292,7 +291,7 @@ export default function ArticleDetailPage({
           )}
         </div>
 
-        {/* Content (Rich Text) */}
+        {/* Content */}
         <div>
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Konten Artikel
@@ -329,15 +328,15 @@ export default function ArticleDetailPage({
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Thumbnail
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             {thumbnailPreview ? (
               <img
                 src={thumbnailPreview}
                 alt="Thumbnail"
-                className="h-20 w-20 rounded-xl object-cover border border-gray-200"
+                className="h-28 w-40 rounded object-cover border border-gray-200"
               />
             ) : (
-              <div className="h-20 w-20 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-gray-400">
+              <div className="h-28 w-40 rounded border border-dashed border-gray-200 flex items-center justify-center text-gray-400">
                 -
               </div>
             )}
@@ -381,7 +380,7 @@ export default function ArticleDetailPage({
           </div>
           <button
             onClick={handleDelete}
-            className="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-sm font-jetbrains font-medium transition-colors flex items-center gap-2"
+            className="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-xs md:text-sm font-jetbrains font-medium transition-colors flex items-center gap-2"
           >
             <HiOutlineTrash className="w-4 h-4" />
             Hapus Artikel

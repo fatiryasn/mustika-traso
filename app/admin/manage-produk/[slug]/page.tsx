@@ -13,6 +13,7 @@ import {
   HiOutlineSave,
   HiOutlineClipboardList,
 } from "react-icons/hi";
+
 import {
   getProductBySlug,
   updateProductWithSubProducts,
@@ -275,10 +276,10 @@ export default function ProductDetailPage({
             <HiOutlineArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-grotesk font-bold text-darkslate/90">
+            <h1 className="text-xl md:text-2xl font-grotesk font-bold text-darkslate/90">
               {mode === "view" ? "Detail Produk" : "Edit Produk"}
             </h1>
-            <p className="text-sm text-darkslate/80 font-inter">
+            <p className="text-xs md:text-sm text-darkslate/80 font-inter">
               {mode === "view"
                 ? "Lihat informasi lengkap produk"
                 : "Ubah data produk dan varian"}
@@ -288,7 +289,7 @@ export default function ProductDetailPage({
         <div className="flex gap-2 self-start">
           <button
             onClick={toggleMode}
-            className={`px-4 py-2 rounded-xl text-sm font-jetbrains font-medium flex items-center gap-2 transition-colors ${
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-jetbrains font-medium flex items-center gap-2 transition-colors ${
               mode === "view"
                 ? "bg-navy text-white hover:bg-steelblue"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -308,7 +309,7 @@ export default function ProductDetailPage({
             <button
               onClick={handleSave}
               disabled={!hasChanges() || saving}
-              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-jetbrains font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs md:text-sm font-jetbrains font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
             >
               <HiOutlineSave className="w-4 h-4" />
               {saving ? "Menyimpan..." : "Simpan"}
@@ -336,7 +337,7 @@ export default function ProductDetailPage({
           )}
         </div>
 
-        {/* Slug (read‑only) */}
+        {/* Slug */}
         <div>
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Slug
@@ -370,15 +371,15 @@ export default function ProductDetailPage({
           <label className="block text-sm font-medium font-grotesk text-navy mb-1">
             Thumbnail
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             {thumbnailPreview ? (
               <img
                 src={thumbnailPreview}
                 alt="Thumbnail"
-                className="h-20 w-20 rounded-xl object-cover border border-gray-200"
+                className="h-40 w-28 rounded object-cover border border-gray-200"
               />
             ) : (
-              <div className="h-20 w-20 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-gray-400">
+              <div className="h-40 w-28 rounded border border-dashed border-gray-200 flex items-center justify-center text-gray-400">
                 -
               </div>
             )}
@@ -418,9 +419,9 @@ export default function ProductDetailPage({
         </div>
       </div>
 
-      {/* Sub Products */}
+      {/* SUB PRODUCTS */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <h2 className="font-semibold text-darkslate font-grotesk">
             Sub Produk (Varian)
           </h2>
@@ -429,7 +430,7 @@ export default function ProductDetailPage({
               <button
                 type="button"
                 onClick={() => setBulkModalOpen(true)}
-                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
+                className="inline-flex items-center gap-1 text-xs md:text-sm text-navy hover:text-steelblue font-jetbrains font-medium transition-colors"
               >
                 <HiOutlineClipboardList className="w-4 h-4" />
                 Paste dari Spreadsheet
@@ -437,7 +438,7 @@ export default function ProductDetailPage({
               <button
                 type="button"
                 onClick={addSubProduct}
-                className="inline-flex items-center gap-1.5 text-sm text-navy hover:text-steelblue font-inter font-medium"
+                className="inline-flex items-center gap-1 text-xs md:text-sm text-navy hover:text-steelblue font-inter font-medium"
               >
                 <HiOutlinePlus className="w-4 h-4" />
                 Tambah Manual
@@ -446,7 +447,6 @@ export default function ProductDetailPage({
           )}
         </div>
 
-        {/* Bulk Import Modal */}
         <SubProductBulkImport
           isOpen={bulkModalOpen}
           onClose={() => setBulkModalOpen(false)}
@@ -556,7 +556,7 @@ export default function ProductDetailPage({
         )}
       </div>
 
-      {/* Delete Section */}
+      {/* DELETE SECTION */}
       <div className="bg-white rounded-2xl shadow-sm border border-red-100 p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>

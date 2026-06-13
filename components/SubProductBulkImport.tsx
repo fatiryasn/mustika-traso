@@ -119,7 +119,7 @@ export default function SubProductBulkImport({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl shadow-2xl">
+      <div className="bg-white rounded-xl p-6 w-full max-w-2xl shadow-2xl m-3">
         <h3 className="text-lg font-semibold font-grotesk text-gray-800 mb-2">
           Paste Data Varian dari Spreadsheet
         </h3>

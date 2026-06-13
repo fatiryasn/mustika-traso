@@ -8,10 +8,10 @@ import {
   HiOutlinePlus,
   HiOutlineSortDescending,
 } from "react-icons/hi";
-import DataTable, { type Column } from "@/components/DataTable";
 import { getProjects } from "@/lib/project/project";
-import { Project } from "@/types/Project";
 import { formatDate } from "@/lib/utils/format";
+import { Project } from "@/types/Project";
+import DataTable, { type Column } from "@/components/DataTable";
 
 interface SortConfig {
   column: string;
@@ -21,7 +21,7 @@ interface SortConfig {
 export default function AdminManageProjectsPage() {
   const router = useRouter();
 
-  // State
+  //STATES
   const [projects, setProjects] = useState<Project[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ export default function AdminManageProjectsPage() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(15);
 
-  // Fetch projects
+  //FETCH PROJECTS
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
@@ -51,7 +51,7 @@ export default function AdminManageProjectsPage() {
     fetchProjects();
   }, [fetchProjects]);
 
-  // Handlers
+  //HANDLERS
   const handleSearchChange = (value: string) => {
     setSearch(value);
     setPage(1);
@@ -65,35 +65,17 @@ export default function AdminManageProjectsPage() {
     setPage(1);
   };
 
-  // Columns definition
+  //COLUMNS
   const columns: Column<Project>[] = [
     {
       key: "title",
       header: "Judul",
+      className: "max-w-[200px] truncate",
       render: (project) => (
         <span className="font-semibold font-inter text-darkblue">
           {project.title}
         </span>
       ),
-    },
-    {
-      key: "slug",
-      header: "Slug",
-      hidden: "md",
-      render: (project) => (
-        <span className="text-gray-500">{project.slug}</span>
-      ),
-    },
-    {
-      key: "description",
-      header: "Deskripsi",
-      hidden: "lg",
-      render: (project) => (
-        <span className="max-w-[200px] truncate block">
-          {project.description || "-"}
-        </span>
-      ),
-      className: "max-w-[200px] truncate",
     },
     {
       key: "thumbnail",
@@ -104,7 +86,7 @@ export default function AdminManageProjectsPage() {
             <img
               src={project.thumbnail}
               alt={project.title}
-              className="w-20 h-20 rounded-sm object-cover border border-gray-200"
+              className="w-36 h-24 rounded-sm object-cover border border-gray-200"
             />
           ) : (
             <span className="text-gray-400">-</span>
@@ -114,15 +96,40 @@ export default function AdminManageProjectsPage() {
       className: "text-center",
     },
     {
+      key: "slug",
+      header: "Slug",
+      hidden: "lg",
+      className: "max-w-[200px] truncate",
+      render: (project) => (
+        <span className="text-gray-500 max-w-[200px] truncate block">
+          {project.slug}
+        </span>
+      ),
+    },
+    {
+      key: "description",
+      header: "Deskripsi",
+      hidden: "md",
+      className: "max-w-[300px] truncate",
+      render: (project) => (
+        <span className="max-w-[200px] truncate block">
+          {project.description || "-"}
+        </span>
+      ),
+    },
+    {
       key: "client_name",
       header: "Klien",
-      hidden: "sm",
-      render: (project) => <span>{project.client_name || "-"}</span>,
+      className: "max-w-[200px] truncate",
+      render: (project) => (
+        <span className="block truncate max-w-[200px]">
+          {project.client_name || "-"}
+        </span>
+      ),
     },
     {
       key: "project_date",
       header: "Tanggal Proyek",
-      hidden: "sm",
       render: (project) => (
         <span>
           {project.project_date ? formatDate(project.project_date, false) : "-"}
@@ -132,12 +139,11 @@ export default function AdminManageProjectsPage() {
     {
       key: "created_at",
       header: "Tanggal Dibuat",
-      hidden: "sm",
       render: (project) => <span>{formatDate(project.created_at)}</span>,
     },
   ];
 
-  // Sort options mapping
+  //SORT OPTIONS
   const sortOptions = [
     { value: "newest", column: "created_at", ascending: false },
     { value: "oldest", column: "created_at", ascending: true },
@@ -154,27 +160,27 @@ export default function AdminManageProjectsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-4">
+        <div className="text-center sm:text-start">
           <h1 className="text-2xl md:text-3xl font-grotesk font-bold text-gray-800">
             Manajemen Proyek
           </h1>
-          <p className="text-darkslate/80 font-inter text-sm mt-1">
+          <p className="text-darkslate/80 font-inter text-xs md:text-sm mt-1">
             Kelola portofolio proyek perusahaan
           </p>
         </div>
         <Link
           href="/admin/manage-proyek/tambah"
-          className="inline-flex items-center gap-2 bg-navy hover:bg-steelblue text-white px-4 py-2.5 rounded-xl text-sm font-jetbrains font-medium transition-colors self-start"
+          className="inline-flex items-center gap-2 bg-navy hover:bg-steelblue text-white px-4 py-2.5 rounded-xl text-xs md:text-sm font-jetbrains font-medium transition-colors sm:self-start"
         >
           <HiOutlinePlus className="w-5 h-5" />
           Tambah Proyek
         </Link>
       </div>
 
-      {/* Search & Sort */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      {/* SEARCH & SORT */}
+      <div className="flex gap-4">
         <div className="relative flex-1">
           <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-darkslate/90 w-5 h-5" />
           <input
@@ -182,10 +188,10 @@ export default function AdminManageProjectsPage() {
             placeholder="Cari proyek (judul/slug/klien)..."
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-sm font-jetbrains transition-all bg-white"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-xs md:text-sm font-jetbrains transition-all bg-white"
           />
         </div>
-        <div className="relative min-w-[180px]">
+        <div className="relative sm:min-w-[180px]">
           <HiOutlineSortDescending className="absolute left-3 top-1/2 -translate-y-1/2 text-darkslate/90 w-5 h-5" />
           <select
             value={currentSortValue}
@@ -193,7 +199,7 @@ export default function AdminManageProjectsPage() {
               const opt = sortOptions.find((o) => o.value === e.target.value);
               if (opt) handleSortChange(opt.column, opt.ascending);
             }}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-sm font-jetbrains bg-white appearance-none cursor-pointer"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-navy/20 focus:border-navy outline-none text-xs md:text-sm font-jetbrains bg-white appearance-none cursor-pointer"
           >
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
@@ -203,7 +209,7 @@ export default function AdminManageProjectsPage() {
         </div>
       </div>
 
-      {/* DataTable */}
+      {/* DATATABLE */}
       <DataTable
         columns={columns}
         data={projects}

@@ -6,11 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   HiOutlineLogout,
   HiOutlineChevronDown,
-  HiOutlineBell,
+  HiOutlineQuestionMarkCircle,
   HiOutlineMenu,
   HiOutlineUser,
 } from "react-icons/hi";
 import { toast } from "sonner";
+
 import { logout, getProfile } from "@/lib/auth/auth";
 
 interface AdminTopbarProps {
@@ -26,16 +27,13 @@ const AdminTopbar = ({
   userEmail: initialUserEmail = "admin@example.com",
   userImage,
 }: AdminTopbarProps) => {
-  
-  const router = useRouter()
+  const router = useRouter();
   const [userName, setUserName] = useState(initialUserName);
   const [userEmail, setUserEmail] = useState(initialUserEmail);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
-  const notificationsRef = useRef<HTMLDivElement>(null);
 
-  //get profile
+  // get profile
   useEffect(() => {
     const fetchUser = async () => {
       const profile = await getProfile();
@@ -47,7 +45,7 @@ const AdminTopbar = ({
     fetchUser();
   }, []);
 
-  //close profile outside click
+  // close profile on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -56,18 +54,12 @@ const AdminTopbar = ({
       ) {
         setIsProfileOpen(false);
       }
-      if (
-        notificationsRef.current &&
-        !notificationsRef.current.contains(event.target as Node)
-      ) {
-        setIsNotificationsOpen(false);
-      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  //get initials
+  // get initials
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -77,7 +69,7 @@ const AdminTopbar = ({
       .slice(0, 2);
   };
 
-  //logout
+  // logout
   const handleLogout = useCallback(() => {
     toast("Keluar dari aplikasi?", {
       action: {
@@ -105,11 +97,11 @@ const AdminTopbar = ({
           <HiOutlineMenu className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-1">
+        <div className="flex flex-col md:flex-row md:items-center md:gap-1">
           <span className="text-sm md:text-base font-grotesk font-semibold text-gray-800">
             PT. Mustika Traso
           </span>
-          <span className="hidden sm:inline-block text-xs md:text-sm text-navy font-inter">
+          <span className="inline-block text-[8px] md:text-sm text-navy font-inter">
             Content Management
           </span>
         </div>
@@ -117,50 +109,19 @@ const AdminTopbar = ({
 
       {/* RIGHT */}
       <div className="flex items-center gap-2">
-        {/* Notifications */}
-        <div ref={notificationsRef} className="relative">
-          <button
-            onClick={() => {
-              setIsNotificationsOpen(!isNotificationsOpen);
-              setIsProfileOpen(false);
-            }}
-            className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors duration-200"
-          >
-            <HiOutlineBell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-          </button>
-
-          <AnimatePresence>
-            {isNotificationsOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden"
-              >
-                <div className="p-4 border-b border-gray-100">
-                  <h3 className="font-sora font-semibold text-gray-800">
-                    Notifications
-                  </h3>
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  <div className="p-4 text-center text-sm text-gray-500 font-manrope">
-                    No new notifications
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* Guide button */}
+        <button
+          onClick={() => console.log("Open guide")}
+          className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors duration-200"
+          title="Panduan"
+        >
+          <HiOutlineQuestionMarkCircle className="w-5 h-5" />
+        </button>
 
         {/* Profile Dropdown */}
         <div ref={profileRef} className="relative">
           <button
-            onClick={() => {
-              setIsProfileOpen(!isProfileOpen);
-              setIsNotificationsOpen(false);
-            }}
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
             className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-gray-100 transition-colors duration-200 group"
           >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -239,7 +200,7 @@ const AdminTopbar = ({
                     </span>
                   </div>
 
-                  {/* Sign Out – now triggers the server action */}
+                  {/* Sign Out */}
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors duration-200 mt-1"
