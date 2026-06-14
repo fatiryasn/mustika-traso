@@ -111,7 +111,12 @@ const AdminTopbar = ({
       <div className="flex items-center gap-2">
         {/* Guide button */}
         <button
-          onClick={() => console.log("Open guide")}
+          onClick={() =>
+            window.open(
+              "https://docs.google.com/document/d/1np31UA4_nfGRDfb1d2blxBhtPVt8f8oC075PWjfdxFk/edit?tab=t.0#heading=h.ji7rt8g1iuev",
+              "_blank",
+            )
+          }
           className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors duration-200"
           title="Panduan"
         >
