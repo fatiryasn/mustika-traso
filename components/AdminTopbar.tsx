@@ -113,7 +113,7 @@ const AdminTopbar = ({
         <button
           onClick={() =>
             window.open(
-              "https://docs.google.com/document/d/1np31UA4_nfGRDfb1d2blxBhtPVt8f8oC075PWjfdxFk/edit?tab=t.0#heading=h.ji7rt8g1iuev",
+              "https://docs.google.com/document/d/1np31UA4_nfGRDfb1d2blxBhtPVt8f8oC075PWjfdxFk/edit?usp=sharing",
               "_blank",
             )
           }
